@@ -34,3 +34,4 @@ public class RelojDemo {
         return segundos;
     }
 }
+//no cerrar el scanner en este caso porque cierra System.in
