@@ -15,7 +15,7 @@ public class RelojDemo {
             reloj.tick();
             System.out.println((i + 1) + " - " + reloj.toString());
         }
-
+        System.out.println("\nSe sumaron 10 segundos al reloj: " + reloj.toString());
         Reloj restarReloj = new Reloj(14400);
 
         Reloj resta = reloj.restaReloj(restarReloj);
