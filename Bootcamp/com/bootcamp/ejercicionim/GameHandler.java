@@ -45,8 +45,7 @@ public class GameHandler {
             return pila;
         }
 
-        int x = pila - amount;
-        return x;
+        return pila - amount;
 
     }
 }
