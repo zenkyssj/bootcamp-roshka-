@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Nim {
 
-    private static GameHandler gameHandler = new GameHandler();
+    private static final GameHandler gameHandler = new GameHandler();
     private static boolean isWinner = false;
     private static int cont = 0;
 
@@ -39,9 +39,7 @@ public class Nim {
     private static String getNombreJugador() {
         Scanner scanner = new Scanner(System.in);
 
-        String playerName = scanner.nextLine();
-
-        return playerName;
+        return scanner.nextLine();
     }
 
     private static void manageTurns(String player) {
@@ -62,17 +60,13 @@ public class Nim {
     private static String selectPila() {
         Scanner scanner = new Scanner(System.in);
 
-        String pilaSelected = scanner.nextLine();
-
-        return pilaSelected;
+        return scanner.nextLine();
     }
 
     private static int selectAmount() {
         Scanner scanner = new Scanner(System.in);
 
-        int amount = scanner.nextInt();
-
-        return amount;
+        return scanner.nextInt();
     }
 
 }

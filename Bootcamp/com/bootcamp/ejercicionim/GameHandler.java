@@ -36,9 +36,7 @@ public class GameHandler {
 
     public boolean isWinner() {
 
-        if (pilaA == 0 && pilaB == 0 && pilaC == 0)
-            return true;
-        return false;
+        return pilaA == 0 && pilaB == 0 && pilaC == 0;
     }
 
     private int amountChecker(int pila, int amount) {
