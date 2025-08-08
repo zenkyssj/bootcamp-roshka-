@@ -14,9 +14,11 @@ public class Poker {
         if (isPoker()) {
             System.out.println("Es Poker.");
         } else if (isEscalerasColor()) {
-            System.out.println("Es escaleras color.");
+            System.out.println("Es Escaleras Color.");
         } else if (isFull()){
-            System.out.println("Es full.");
+            System.out.println("Es Full.");
+        } else if (isColor()){
+            System.out.println("Es Color");
         }
     }
 
@@ -55,7 +57,6 @@ public class Poker {
     }
 
     private boolean isFull() {
-        //TODO: GUARDAR CUANTOS CARTAS REPETIDAS HAY, SI HAY 2 QUE SE REPITEN 3 VECES Y 2 VECES, RETORNAR TRUE.
         List<String> cartasString = new ArrayList<>();
 
         for (Carta carta : cartas){
@@ -85,7 +86,34 @@ public class Poker {
             conteo.put(elemento, conteo.getOrDefault(elemento, 0) + 1);
         }
 
+
         return conteo;
+    }
+
+    private boolean isColor(){
+        List<String> palos = new ArrayList<>();
+
+        for (Carta carta : this.cartas) {
+            System.out.println();
+            palos.add(String.valueOf(carta.valorPalo().charAt(1)));
+        }
+
+        return isAllPalosEquals(palos);
+    }
+
+    private boolean isAllPalosEquals(List<String> lista) {
+        String primerPalo = lista.getFirst();
+        for (String palo : lista) {
+            if (!palo.equals(primerPalo)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isEscalera(){
+
+        return false;
     }
 }
 
