@@ -115,7 +115,7 @@ public class Generala
         }
 
         // ESTO SI SE EJECUTA PARA USTEDES
-        System.out.println(g.jugada("55555"));
+        System.out.println(g.jugada("55544"));
 
         System.out.println("Probabilidad de sacar Generala: 0.077%");
         System.out.println("Probabilidad de sacar Poker 1 vez es: 1.928%");
