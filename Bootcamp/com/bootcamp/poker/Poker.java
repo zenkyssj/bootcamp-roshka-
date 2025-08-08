@@ -4,9 +4,6 @@ import java.util.*;
 
 public class Poker {
     private final ArrayList<Carta> cartas;
-    ;
-    List<Integer> valores = new ArrayList<>();
-
 
     public Poker(ArrayList<Carta> cartas) {
         this.cartas = cartas;
@@ -52,6 +49,24 @@ public class Poker {
             System.out.println("Es Full.");
         } else if (isColor()){
             System.out.println("Es Color");
+        } else if (checkOrder() == 5) {
+            System.out.println("Es Escalera.");
+        } else{
+            switch (isTrioParDobleParCartaAlta()){
+                case 1:
+                    System.out.println("Es Trio.");
+                    break;
+                case 2:
+                    System.out.println("Es Par Doble.");
+                    break;
+                case 3:
+                    System.out.println("Par.");
+                    break;
+                case 4:
+                    System.out.println("Es Carta Alta");
+                default:
+                    break;
+            }
         }
     }
 
@@ -67,60 +82,26 @@ public class Poker {
     }
 
     private int checkOrder(){
-
         String firstValue = String.valueOf(cartas.getFirst().valorPalo().charAt(0));
-        String lastValue = String.valueOf(cartas.getLast().valorPalo().charAt(0));
 
-        if (!firstValue.equals("A") && !lastValue.equals("A")){
-            return checkWithoutA();
-        } else if (firstValue.equals("A")){
-            return checkWithAFirst();
-        }
-        return 0;
-    }
+        List<Integer> valoresConAsBajo = buildNumericValues(1);
+        if (isSequential(valoresConAsBajo)) return 5;
 
-    private int checkWithoutA() {
-        //initializeNumericValues(1);
-
-        int contador = 1;
-
-        for (int i = 1; i < valores.size(); i++) {
-            if (valores.get(i) == valores.get(i - 1) + 1) {
-                contador++;
-            } else {
-                break;
-            }
-        }
-
-        return contador;
-    }
-
-    private int checkWithAFirst(){
-        //initializeNumericValues(1);
-        int contador = 1;
-
-        //numericValues.put("A", 1);
-
-        if (valores.get(0) < valores.get(1)){
-            return 0;
-        }
-
-        for (int i = 1; i < valores.size(); i++) {
-            if (valores.get(i) == valores.get(i - 1) + 1) {
-                contador++;
-            } else {
-                break;
-            }
-        }
-
-        return contador;
-    }
-
-    private int checkWithALast(){
-        //initializeNumericValues(14);
+        List<Integer> valoresConAsAlto = buildNumericValues(14);
+        if (isSequential(valoresConAsAlto)) return 5;
 
         return 0;
     }
+
+    private boolean isSequential(List<Integer> valores){
+        for (int i = 1; i < valores.size(); i++) {
+            if (valores.get(i) != valores.get(i - 1) + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean isPoker() {
         int maxCart = 0;
         Map<String, Integer> contador = new HashMap<>();
@@ -169,7 +150,6 @@ public class Poker {
             conteo.put(elemento, conteo.getOrDefault(elemento, 0) + 1);
         }
 
-
         return conteo;
     }
 
@@ -194,9 +174,37 @@ public class Poker {
         return true;
     }
 
-    private boolean isEscalera(){
+    private int isTrioParDobleParCartaAlta() {
 
-        return false;
+        Map<String, Integer> contador = new HashMap<>();
+
+        // Contamos cuántas veces aparece cada valor
+        for (Carta carta : cartas) {
+            String valor = carta.valorPalo().substring(0, carta.valorPalo().length() - 1); //
+            contador.put(valor, contador.getOrDefault(valor, 0) + 1);
+        }
+
+        int pares = 0;
+        boolean trio = false;
+
+        for (int cantidad : contador.values()) {
+            if (cantidad == 3) {
+                trio = true;
+            } else if (cantidad == 2) {
+                pares++;
+            }
+        }
+
+        if (trio) {
+            return 1; // Trío
+        } else if (pares == 2) {
+            return 2; // Doble par
+        } else if (pares == 1) {
+            return 3; // Par
+        } else {
+            return 4; // Carta alta
+        }
     }
 }
+
 
