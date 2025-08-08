@@ -7,7 +7,6 @@ public class Poker {
 
     public Poker(ArrayList<Carta> cartas) {
         this.cartas = cartas;
-
     }
 
     private List<Integer> buildNumericValues(int value){
@@ -29,7 +28,7 @@ public class Poker {
 
         List<Integer> valores = new ArrayList<>();
         for (Carta carta : cartas) {
-            String valor = carta.valorPalo().substring(0, carta.valorPalo().length() - 1); // Quitar el último char (palo)
+            String valor = carta.valorPalo().substring(0, carta.valorPalo().length() - 1);
             Integer num = numericValues.get(valor);
             if (num != null) {
                 valores.add(num);
@@ -40,7 +39,6 @@ public class Poker {
         return valores;
     }
     public void combinationManager() {
-
         if (isPoker()) {
             System.out.println("Es Poker.");
         } else if (isEscalerasColor()) {
@@ -82,7 +80,6 @@ public class Poker {
     }
 
     private int checkOrder(){
-        String firstValue = String.valueOf(cartas.getFirst().valorPalo().charAt(0));
 
         List<Integer> valoresConAsBajo = buildNumericValues(1);
         if (isSequential(valoresConAsBajo)) return 5;
@@ -115,7 +112,6 @@ public class Poker {
                 maxCart = entry.getValue();
             }
         }
-
         return maxCart == 4;
     }
 
@@ -149,7 +145,6 @@ public class Poker {
         for (String elemento : lista){
             conteo.put(elemento, conteo.getOrDefault(elemento, 0) + 1);
         }
-
         return conteo;
     }
 
@@ -160,7 +155,6 @@ public class Poker {
             System.out.println();
             palos.add(String.valueOf(carta.valorPalo().charAt(1)));
         }
-
         return isAllPalosEquals(palos);
     }
 
@@ -175,10 +169,8 @@ public class Poker {
     }
 
     private int isTrioParDobleParCartaAlta() {
-
         Map<String, Integer> contador = new HashMap<>();
 
-        // Contamos cuántas veces aparece cada valor
         for (Carta carta : cartas) {
             String valor = carta.valorPalo().substring(0, carta.valorPalo().length() - 1); //
             contador.put(valor, contador.getOrDefault(valor, 0) + 1);
@@ -194,15 +186,14 @@ public class Poker {
                 pares++;
             }
         }
-
         if (trio) {
-            return 1; // Trío
+            return 1;
         } else if (pares == 2) {
-            return 2; // Doble par
+            return 2;
         } else if (pares == 1) {
-            return 3; // Par
+            return 3;
         } else {
-            return 4; // Carta alta
+            return 4;
         }
     }
 }
