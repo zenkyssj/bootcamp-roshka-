@@ -14,7 +14,9 @@ public class Poker {
         if (isPoker()) {
             System.out.println("Es Poker.");
         } else if (isEscalerasColor()) {
-            System.out.println("Es escaleras color,");
+            System.out.println("Es escaleras color.");
+        } else if (isFull()){
+            System.out.println("Es full.");
         }
     }
 
@@ -56,35 +58,33 @@ public class Poker {
         //TODO: GUARDAR CUANTOS CARTAS REPETIDAS HAY, SI HAY 2 QUE SE REPITEN 3 VECES Y 2 VECES, RETORNAR TRUE.
         List<String> cartasString = new ArrayList<>();
 
-        int maxCart = 0;
-        int maxCartValue = 0;
-
         for (Carta carta : cartas){
             cartasString.add(carta.valorPalo());
         }
+
         Map<String, Integer> conteo = contarCartasRepetidas(cartasString);
 
-        for (Map.Entry<String, Integer> entrada : conteo.entrySet()) {
-            System.out.println("Elemento: " + entrada.getKey() + ", Repeticiones: " + entrada.getValue());
-            maxCart = entrada.getKey();
-            maxCartValue = entrada.getValue();
+        boolean hayTrio = false;
+        boolean hayPar = false;
+
+        for (int repeticiones : conteo.values()) {
+            if (repeticiones == 3) {
+                hayTrio = true;
+            } else if (repeticiones == 2) {
+                hayPar = true;
+            }
         }
-        return false;
+
+        return hayTrio && hayPar;
     }
 
     private Map<String, Integer> contarCartasRepetidas(List<String> lista) {
         Map<String, Integer> conteo = new HashMap<>();
-        HashSet<String> elementosUnicos = new HashSet<>(lista);
 
-        for (String elemento : elementosUnicos) {
-            int contador = 0;
-            for (String elementoLista : lista) {
-                if (elemento.equals(elementoLista)) {
-                    contador++;
-                }
-            }
-            conteo.put(elemento, contador);
+        for (String elemento : lista){
+            conteo.put(elemento, conteo.getOrDefault(elemento, 0) + 1);
         }
+
         return conteo;
     }
 }

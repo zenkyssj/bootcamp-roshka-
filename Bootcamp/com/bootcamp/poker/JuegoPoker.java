@@ -9,8 +9,8 @@ public class JuegoPoker {
         cartas.add(new Carta("2C"));
         cartas.add(new Carta("2C"));
         cartas.add(new Carta("2C"));
-        cartas.add(new Carta("3C"));
-        cartas.add(new Carta("3C"));
+        cartas.add(new Carta("3A"));
+        cartas.add(new Carta("3A"));
 
         Poker poker = new Poker(cartas);
         poker.combinationManager();
