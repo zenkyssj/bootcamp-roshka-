@@ -4,11 +4,25 @@ import java.util.*;
 
 public class Poker {
     private final ArrayList<Carta> cartas;
+    private final ArrayList<Carta> cartas2;
 
-    public Poker(ArrayList<Carta> cartas) {
+    public Poker(ArrayList<Carta> cartas, ArrayList<Carta> cartas2)
+    {
         this.cartas = cartas;
+        this.cartas2 = cartas2;
     }
 
+    private enum Jugadas{
+        ESCALERA_COLOR,
+        POKR,
+        FULL,
+        COLOR,
+        ESCALERA,
+        TRIO,
+        DOBLE_PAR,
+        PAR,
+        CARTA_ALTA
+    }
     private List<Integer> buildNumericValues(int value){
         Map<String, Integer> numericValues = new HashMap<>();
 
@@ -37,6 +51,12 @@ public class Poker {
 
         Collections.sort(valores);
         return valores;
+    }
+
+    public Jugadas jugadas(){
+
+
+        return Jugadas.CARTA_ALTA;
     }
     public void combinationManager() {
         if (isPoker()) {
