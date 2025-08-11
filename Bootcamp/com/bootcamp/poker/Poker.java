@@ -6,13 +6,12 @@ public class Poker {
     private final ArrayList<Carta> cartas;
     private final ArrayList<Carta> cartas2;
 
-    public Poker(ArrayList<Carta> cartas, ArrayList<Carta> cartas2)
-    {
+    public Poker(ArrayList<Carta> cartas, ArrayList<Carta> cartas2) {
         this.cartas = cartas;
         this.cartas2 = cartas2;
     }
 
-    private enum HandRank{
+    private enum HandRank {
         CARTA_ALTA,
         PAR,
         DOBLE_PAR,
@@ -20,53 +19,53 @@ public class Poker {
         ESCALERA,
         COLOR,
         FULL,
-        POKR,
+        POKER,
         ESCALERA_COLOR
     }
-    private List<Integer> buildNumericValues(int value){
-        Map<String, Integer> numericValues = new HashMap<>();
 
-        numericValues.put("A", value);
-        numericValues.put("2", 2);
-        numericValues.put("3", 3);
-        numericValues.put("4", 4);
-        numericValues.put("5", 5);
-        numericValues.put("6", 6);
-        numericValues.put("7", 7);
-        numericValues.put("8", 8);
-        numericValues.put("9", 9);
-        numericValues.put("10", 10);
-        numericValues.put("J", 11);
-        numericValues.put("Q", 12);
+    private List<Integer> buildNumericValues(int aceValue, List<Carta> hand) {
+        Map<String, Integer> numericValues = new HashMap<>();
+        numericValues.put("A", aceValue);
         numericValues.put("K", 13);
+        numericValues.put("Q", 12);
+        numericValues.put("J", 11);
+        numericValues.put("T", 10);
+        numericValues.put("10", 10);
+        numericValues.put("9", 9);
+        numericValues.put("8", 8);
+        numericValues.put("7", 7);
+        numericValues.put("6", 6);
+        numericValues.put("5", 5);
+        numericValues.put("4", 4);
+        numericValues.put("3", 3);
+        numericValues.put("2", 2);
 
         List<Integer> valores = new ArrayList<>();
-        for (Carta carta : cartas) {
-            String valor = carta.valorPalo().substring(0, carta.valorPalo().length() - 1);
+        for (Carta carta : hand) {
+            String vp = carta.valorPalo();
+            String valor = vp.substring(0, vp.length() - 1);
             Integer num = numericValues.get(valor);
             if (num != null) {
                 valores.add(num);
             }
         }
-
         Collections.sort(valores);
         return valores;
     }
 
-    private HandRank evaluar(ArrayList<Carta> c){
-
-        if (isEscalerasColor(c)){
+    private HandRank evaluar(ArrayList<Carta> c) {
+        if (isEscalerasColor(c)) {
             return HandRank.ESCALERA_COLOR;
-        } else if (isPoker(c)){
-            return HandRank.POKR;
-        } else if (isFull(c)){
+        } else if (isPoker(c)) {
+            return HandRank.POKER;
+        } else if (isFull(c)) {
             return HandRank.FULL;
-        } else if (isColor(c)){
+        } else if (isColor(c)) {
             return HandRank.COLOR;
-        } else if (checkOrder() == 5){
+        } else if (checkOrder(c) == 5) {
             return HandRank.ESCALERA;
         } else {
-            switch (isTrioParDobleParCartaAlta(c)){
+            switch (isTrioParDobleParCartaAlta(c)) {
                 case 1 -> {
                     return HandRank.TRIO;
                 }
@@ -81,50 +80,49 @@ public class Poker {
                 }
             }
         }
-
         return HandRank.CARTA_ALTA;
     }
 
     public void combinationManager() {
-        HandRank rank_carta1 = evaluar(this.cartas);
-        HandRank rank_carta2 = evaluar(this.cartas2);
+        HandRank rank1 = evaluar(this.cartas);
+        HandRank rank2 = evaluar(this.cartas2);
 
-        int cmp = rank_carta2.compareTo(rank_carta1);
-
-        if (cmp < 0) {
-            System.out.println("Gana la carta 1: ");
-        } else if (cmp > 0) {
-            System.out.println("Gana la carta 2: ");
+        int cmp = rank1.compareTo(rank2);
+        if (cmp > 0) {
+            System.out.println("Gana la mano 1: " + rank1);
+        } else if (cmp < 0) {
+            System.out.println("Gana la mano 2: " + rank2);
         } else {
-            System.out.println("Empate");
+            System.out.println("Empate: " + rank1);
         }
     }
 
     private boolean isEscalerasColor(ArrayList<Carta> c) {
+        if (c.isEmpty()) return false;
 
-        String firstPalo = String.valueOf(cartas.getFirst().valorPalo().charAt(1));
+        char firstSuit = c.get(0).valorPalo().charAt(c.get(0).valorPalo().length() - 1);
         for (Carta carta : c) {
-            if (!firstPalo.equals(String.valueOf(carta.valorPalo().charAt(1))))
-                return false;
+            String vp = carta.valorPalo();
+            char suit = vp.charAt(vp.length() - 1);
+            if (suit != firstSuit) return false;
         }
-
-        return checkOrder() == 5;
+        return checkOrder(c) == 5;
     }
 
-    private int checkOrder(){
-
-        List<Integer> valoresConAsBajo = buildNumericValues(1);
+    private int checkOrder(List<Carta> hand) {
+        List<Integer> valoresConAsBajo = buildNumericValues(1, hand);
         if (isSequential(valoresConAsBajo)) return 5;
 
-        List<Integer> valoresConAsAlto = buildNumericValues(14);
+        List<Integer> valoresConAsAlto = buildNumericValues(14, hand);
         if (isSequential(valoresConAsAlto)) return 5;
 
         return 0;
     }
 
-    private boolean isSequential(List<Integer> valores){
+    private boolean isSequential(List<Integer> valores) {
+        if (valores.size() < 5) return false;
         for (int i = 1; i < valores.size(); i++) {
-            if (valores.get(i) != valores.get(i - 1) + 1) {
+            if (!Objects.equals(valores.get(i), valores.get(i - 1) + 1)) {
                 return false;
             }
         }
@@ -132,79 +130,66 @@ public class Poker {
     }
 
     private boolean isPoker(ArrayList<Carta> c) {
-        int maxCart = 0;
         Map<String, Integer> contador = new HashMap<>();
-
         for (Carta carta : c) {
-            contador.put(carta.valorPalo(), contador.getOrDefault(carta.valorPalo(), 0) + 1);
+            String vp = carta.valorPalo();
+            String valor = vp.substring(0, vp.length() - 1);
+            contador.put(valor, contador.getOrDefault(valor, 0) + 1);
         }
-
-        for (Map.Entry<String, Integer> entry : contador.entrySet()) {
-            if (entry.getValue() > 1) {
-                maxCart = entry.getValue();
-            }
+        for (int count : contador.values()) {
+            if (count == 4) return true;
         }
-        return maxCart == 4;
+        return false;
     }
 
-
     private boolean isFull(ArrayList<Carta> c) {
-        List<String> cartasString = new ArrayList<>();
-
-        for (Carta carta : c){
-            cartasString.add(carta.valorPalo());
+        Map<String, Integer> contador = new HashMap<>();
+        for (Carta carta : c) {
+            String vp = carta.valorPalo();
+            String valor = vp.substring(0, vp.length() - 1);
+            contador.put(valor, contador.getOrDefault(valor, 0) + 1);
         }
-
-        Map<String, Integer> conteo = contarCartasRepetidas(cartasString);
-
         boolean hayTrio = false;
         boolean hayPar = false;
-
-        for (int repeticiones : conteo.values()) {
-            if (repeticiones == 3) {
-                hayTrio = true;
-            } else if (repeticiones == 2) {
-                hayPar = true;
-            }
+        for (int repeticiones : contador.values()) {
+            if (repeticiones == 3) hayTrio = true;
+            else if (repeticiones == 2) hayPar = true;
         }
-
         return hayTrio && hayPar;
     }
 
     private Map<String, Integer> contarCartasRepetidas(List<String> lista) {
         Map<String, Integer> conteo = new HashMap<>();
-
-        for (String elemento : lista){
+        for (String elemento : lista) {
             conteo.put(elemento, conteo.getOrDefault(elemento, 0) + 1);
         }
         return conteo;
     }
 
-    private boolean isColor(ArrayList<Carta> c){
-        List<String> palos = new ArrayList<>();
-
+    private boolean isColor(ArrayList<Carta> c) {
+        if (c.isEmpty()) return false;
+        List<Character> palos = new ArrayList<>();
         for (Carta carta : c) {
-            System.out.println();
-            palos.add(String.valueOf(carta.valorPalo().charAt(1)));
+            String vp = carta.valorPalo();
+            palos.add(vp.charAt(vp.length() - 1));
         }
         return isAllPalosEquals(palos);
     }
 
-    private boolean isAllPalosEquals(List<String> lista) {
-        String primerPalo = lista.getFirst();
-        for (String palo : lista) {
-            if (!palo.equals(primerPalo)) {
-                return false;
-            }
+    private boolean isAllPalosEquals(List<Character> lista) {
+        if (lista.isEmpty()) return false;
+        char primerPalo = lista.get(0);
+        for (char palo : lista) {
+            if (palo != primerPalo) return false;
         }
         return true;
     }
 
     private int isTrioParDobleParCartaAlta(ArrayList<Carta> c) {
         Map<String, Integer> contador = new HashMap<>();
-
         for (Carta carta : c) {
-            String valor = carta.valorPalo().substring(0, carta.valorPalo().length() - 1); //
+            String vp = carta.valorPalo();
+            String valor = vp.substring(0, vp.length() - 1);
             contador.put(valor, contador.getOrDefault(valor, 0) + 1);
         }
 
@@ -229,5 +214,3 @@ public class Poker {
         }
     }
 }
-
-
