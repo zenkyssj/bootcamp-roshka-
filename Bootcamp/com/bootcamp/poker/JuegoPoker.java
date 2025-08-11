@@ -1,19 +1,32 @@
 package com.bootcamp.poker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JuegoPoker {
     public static void main(String[] args) {
-        ArrayList<Carta> cartas = new ArrayList<>();
-        cartas.add(new Carta("2H"));
-        cartas.add(new Carta("5D"));
-        cartas.add(new Carta("7S"));
-        cartas.add(new Carta("9C"));
-        cartas.add(new Carta("QH"));
 
-        Poker poker = new Poker(cartas);
+        ArrayList<Carta> cartas = new ArrayList<>();
+        ArrayList<Carta> cartas2 = new ArrayList<>();
+
+        cartas.add(new Carta("2S"));
+        cartas.add(new Carta("2S"));
+        cartas.add(new Carta("2S"));
+        cartas.add(new Carta("2S"));
+        cartas.add(new Carta("8S"));
+
+        cartas2.add(new Carta("2S"));
+        cartas2.add(new Carta("2H"));
+        cartas2.add(new Carta("2H"));
+        cartas2.add(new Carta("2H"));
+        cartas2.add(new Carta("5S"));
+
+
+
+        Poker poker = new Poker(cartas, cartas2);
 
         poker.combinationManager();
+
 
         System.out.println("\nProbabilidad de obtener Escalera de Color: 0.00154%");
         System.out.println("Probabilidad de obtener Poker: 0.0240%");
