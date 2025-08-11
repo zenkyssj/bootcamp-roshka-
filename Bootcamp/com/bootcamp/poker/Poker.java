@@ -23,194 +23,239 @@ public class Poker {
         ESCALERA_COLOR
     }
 
-    private List<Integer> buildNumericValues(int aceValue, List<Carta> hand) {
-        Map<String, Integer> numericValues = new HashMap<>();
-        numericValues.put("A", aceValue);
-        numericValues.put("K", 13);
-        numericValues.put("Q", 12);
-        numericValues.put("J", 11);
-        numericValues.put("T", 10);
-        numericValues.put("10", 10);
-        numericValues.put("9", 9);
-        numericValues.put("8", 8);
-        numericValues.put("7", 7);
-        numericValues.put("6", 6);
-        numericValues.put("5", 5);
-        numericValues.put("4", 4);
-        numericValues.put("3", 3);
-        numericValues.put("2", 2);
+    private static final class HandValue implements Comparable<HandValue> {
+        final HandRank rank;
+        final List<Integer> tiebreakers; // ordenados de mayor a menor importancia
 
-        List<Integer> valores = new ArrayList<>();
-        for (Carta carta : hand) {
-            String vp = carta.valorPalo();
-            String valor = vp.substring(0, vp.length() - 1);
-            Integer num = numericValues.get(valor);
-            if (num != null) {
-                valores.add(num);
-            }
+        HandValue(HandRank rank, List<Integer> tiebreakers) {
+            this.rank = rank;
+            this.tiebreakers = List.copyOf(tiebreakers);
         }
-        Collections.sort(valores);
-        return valores;
+
+        @Override
+        public int compareTo(HandValue o) {
+            int byRank = this.rank.compareTo(o.rank);
+            if (byRank != 0) return byRank;
+            int n = Math.min(this.tiebreakers.size(), o.tiebreakers.size());
+            for (int i = 0; i < n; i++) {
+                int a = this.tiebreakers.get(i);
+                int b = o.tiebreakers.get(i);
+                if (a != b) return Integer.compare(a, b);
+            }
+            return Integer.compare(this.tiebreakers.size(), o.tiebreakers.size());
+        }
+
+        @Override
+        public String toString() {
+            return rank + " " + tiebreakers;
+        }
     }
 
-    private HandRank evaluar(ArrayList<Carta> c) {
-        if (isEscalerasColor(c)) {
-            return HandRank.ESCALERA_COLOR;
-        } else if (isPoker(c)) {
-            return HandRank.POKER;
-        } else if (isFull(c)) {
-            return HandRank.FULL;
-        } else if (isColor(c)) {
-            return HandRank.COLOR;
-        } else if (checkOrder(c) == 5) {
-            return HandRank.ESCALERA;
-        } else {
-            switch (isTrioParDobleParCartaAlta(c)) {
-                case 1 -> {
-                    return HandRank.TRIO;
-                }
-                case 2 -> {
-                    return HandRank.DOBLE_PAR;
-                }
-                case 3 -> {
-                    return HandRank.PAR;
-                }
-                case 4 -> {
-                    return HandRank.CARTA_ALTA;
-                }
+    // Mapeo de valores soportando "T" y "10". As puede ser 14 o 1 según se pase.
+    private int mapValor(String valor, int aceValue) {
+        return switch (valor) {
+            case "A" -> aceValue;
+            case "K" -> 13;
+            case "Q" -> 12;
+            case "J" -> 11;
+            case "T", "10" -> 10;
+            case "9" -> 9;
+            case "8" -> 8;
+            case "7" -> 7;
+            case "6" -> 6;
+            case "5" -> 5;
+            case "4" -> 4;
+            case "3" -> 3;
+            case "2" -> 2;
+            default -> throw new IllegalArgumentException("Valor de carta inválido: " + valor);
+        };
+    }
+
+    private String getValorStr(Carta c) {
+        String vp = c.valorPalo();
+        return vp.substring(0, vp.length() - 1);
+    }
+
+    private char getPalo(Carta c) {
+        String vp = c.valorPalo();
+        return vp.charAt(vp.length() - 1);
+    }
+
+    private List<Integer> valuesDesc(List<Carta> hand, int aceValue) {
+        List<Integer> vals = new ArrayList<>(5);
+        for (Carta c : hand) vals.add(mapValor(getValorStr(c), aceValue));
+        vals.sort(Comparator.reverseOrder());
+        return vals;
+    }
+
+    private boolean isFlush(List<Carta> hand) {
+        char s = getPalo(hand.get(0));
+        for (Carta c : hand) if (getPalo(c) != s) return false;
+        return true;
+    }
+
+    // Devuelve: [esEscalera, cartaAlta] considerando As alto y rueda A-2-3-4-5
+    private AbstractMap.SimpleEntry<Boolean, Integer> straightHigh(List<Carta> hand) {
+        // Usar set para evitar duplicados
+        Set<Integer> uniqHigh = new HashSet<>();
+        for (Carta c : hand) uniqHigh.add(mapValor(getValorStr(c), 14));
+        if (uniqHigh.size() != 5) return new AbstractMap.SimpleEntry<>(false, 0);
+
+        List<Integer> vHigh = new ArrayList<>(uniqHigh);
+        vHigh.sort(Comparator.naturalOrder());
+        boolean seqHigh = true;
+        for (int i = 1; i < vHigh.size(); i++) {
+            if (vHigh.get(i) != vHigh.get(i - 1) + 1) {
+                seqHigh = false;
+                break;
             }
         }
-        return HandRank.CARTA_ALTA;
+        if (seqHigh) return new AbstractMap.SimpleEntry<>(true, vHigh.get(4)); // carta alta
+
+        // rueda: A(14) -> tratar As como 1 y volver a comprobar
+        Set<Integer> uniqLow = new HashSet<>();
+        for (Carta c : hand) uniqLow.add(mapValor(getValorStr(c), 1));
+        List<Integer> vLow = new ArrayList<>(uniqLow);
+        vLow.sort(Comparator.naturalOrder());
+        if (vLow.size() == 5) {
+            boolean seqLow = true;
+            for (int i = 1; i < vLow.size(); i++) {
+                if (vLow.get(i) != vLow.get(i - 1) + 1) {
+                    seqLow = false;
+                    break;
+                }
+            }
+            if (seqLow && vLow.get(0) == 1 && vLow.get(4) == 5) {
+                return new AbstractMap.SimpleEntry<>(true, 5); // rueda -> carta alta 5
+            }
+        }
+        return new AbstractMap.SimpleEntry<>(false, 0);
+    }
+
+    private Map<Integer, Integer> countsByValue(List<Carta> hand) {
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (Carta c : hand) {
+            int v = mapValor(getValorStr(c), 14); // para conteos el As es 14
+            counts.put(v, counts.getOrDefault(v, 0) + 1);
+        }
+        return counts;
+    }
+
+    // Construye tiebreakers para patrones por grupos: ordena por (size desc, valor desc)
+    private List<Integer> groupsTieBreakers(Map<Integer, Integer> counts, int... groupSizesDesc) {
+        // agrupar por tamaño
+        List<Integer> result = new ArrayList<>();
+        Map<Integer, List<Integer>> bySize = new HashMap<>();
+        for (Map.Entry<Integer, Integer> e : counts.entrySet()) {
+            bySize.computeIfAbsent(e.getValue(), k -> new ArrayList<>()).add(e.getKey());
+        }
+        for (int size : groupSizesDesc) {
+            List<Integer> vals = bySize.getOrDefault(size, Collections.emptyList());
+            vals.sort(Comparator.reverseOrder());
+            result.addAll(vals);
+        }
+        // añadir kickers restantes (size 1)
+        if (!bySize.isEmpty()) {
+            List<Integer> singles = new ArrayList<>();
+            for (Map.Entry<Integer, List<Integer>> e : bySize.entrySet()) {
+                if (e.getKey() == 1) singles.addAll(e.getValue());
+            }
+            singles.sort(Comparator.reverseOrder());
+            result.addAll(singles);
+        }
+        return result;
+    }
+
+    // Evalúa una mano devolviendo rango y tiebreakers listos para comparar
+    private HandValue evaluarConDesempate(ArrayList<Carta> hand) {
+        boolean flush = isFlush(hand);
+        var straightInfo = straightHigh(hand);
+        boolean straight = straightInfo.getKey();
+        int straightHighCard = straightInfo.getValue();
+
+        Map<Integer, Integer> counts = countsByValue(hand);
+
+        if (straight && flush) {
+            return new HandValue(HandRank.ESCALERA_COLOR, List.of(straightHighCard));
+        }
+
+        // Póker: 4 + kicker
+        if (counts.containsValue(4)) {
+            List<Integer> tbs = groupsTieBreakers(counts, 4);
+            return new HandValue(HandRank.POKER, tbs);
+        }
+
+        // Full: 3 + 2
+        if (counts.containsValue(3) && counts.containsValue(2)) {
+            List<Integer> tbs = new ArrayList<>();
+            // primero el trío, luego el par
+            List<Integer> trio = new ArrayList<>();
+            List<Integer> par = new ArrayList<>();
+            for (Map.Entry<Integer, Integer> e : counts.entrySet()) {
+                if (e.getValue() == 3) trio.add(e.getKey());
+                else if (e.getValue() == 2) par.add(e.getKey());
+            }
+            trio.sort(Comparator.reverseOrder());
+            par.sort(Comparator.reverseOrder());
+            tbs.addAll(trio);
+            tbs.addAll(par);
+            return new HandValue(HandRank.FULL, tbs);
+        }
+
+        if (flush) {
+            // 5 cartas desc
+            return new HandValue(HandRank.COLOR, valuesDesc(hand, 14));
+        }
+
+        if (straight) {
+            return new HandValue(HandRank.ESCALERA, List.of(straightHighCard));
+        }
+
+        // Trío: 3 + dos kickers
+        if (counts.containsValue(3)) {
+            List<Integer> tbs = groupsTieBreakers(counts, 3);
+            return new HandValue(HandRank.TRIO, tbs);
+        }
+
+        // Doble par: par alto, par bajo, kicker
+        int pairs = 0;
+        for (int v : counts.values()) if (v == 2) pairs++;
+        if (pairs >= 2) {
+            // ordenar pares desc y luego kicker
+            List<Integer> paresVals = new ArrayList<>();
+            List<Integer> singles = new ArrayList<>();
+            for (Map.Entry<Integer, Integer> e : counts.entrySet()) {
+                if (e.getValue() == 2) paresVals.add(e.getKey());
+                else if (e.getValue() == 1) singles.add(e.getKey());
+            }
+            paresVals.sort(Comparator.reverseOrder());
+            singles.sort(Comparator.reverseOrder());
+            List<Integer> tbs = new ArrayList<>(paresVals);
+            tbs.addAll(singles); // solo habrá 1 kicker
+            return new HandValue(HandRank.DOBLE_PAR, tbs);
+        }
+
+        // Par: par + 3 kickers
+        if (counts.containsValue(2)) {
+            List<Integer> tbs = groupsTieBreakers(counts, 2);
+            return new HandValue(HandRank.PAR, tbs);
+        }
+
+        // Carta alta
+        return new HandValue(HandRank.CARTA_ALTA, valuesDesc(hand, 14));
     }
 
     public void combinationManager() {
-        HandRank rank1 = evaluar(this.cartas);
-        HandRank rank2 = evaluar(this.cartas2);
+        HandValue hv1 = evaluarConDesempate(this.cartas);
+        HandValue hv2 = evaluarConDesempate(this.cartas2);
 
-        int cmp = rank1.compareTo(rank2);
+        int cmp = hv1.compareTo(hv2);
         if (cmp > 0) {
-            System.out.println("Gana la mano 1: " + rank1);
+            System.out.println("Gana la mano 1: " + hv1.rank);
         } else if (cmp < 0) {
-            System.out.println("Gana la mano 2: " + rank2);
+            System.out.println("Gana la mano 2: " + hv2.rank);
         } else {
-            System.out.println("Empate: " + rank1);
-        }
-    }
-
-    private boolean isEscalerasColor(ArrayList<Carta> c) {
-        if (c.isEmpty()) return false;
-
-        char firstSuit = c.get(0).valorPalo().charAt(c.get(0).valorPalo().length() - 1);
-        for (Carta carta : c) {
-            String vp = carta.valorPalo();
-            char suit = vp.charAt(vp.length() - 1);
-            if (suit != firstSuit) return false;
-        }
-        return checkOrder(c) == 5;
-    }
-
-    private int checkOrder(List<Carta> hand) {
-        List<Integer> valoresConAsBajo = buildNumericValues(1, hand);
-        if (isSequential(valoresConAsBajo)) return 5;
-
-        List<Integer> valoresConAsAlto = buildNumericValues(14, hand);
-        if (isSequential(valoresConAsAlto)) return 5;
-
-        return 0;
-    }
-
-    private boolean isSequential(List<Integer> valores) {
-        if (valores.size() < 5) return false;
-        for (int i = 1; i < valores.size(); i++) {
-            if (!Objects.equals(valores.get(i), valores.get(i - 1) + 1)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isPoker(ArrayList<Carta> c) {
-        Map<String, Integer> contador = new HashMap<>();
-        for (Carta carta : c) {
-            String vp = carta.valorPalo();
-            String valor = vp.substring(0, vp.length() - 1);
-            contador.put(valor, contador.getOrDefault(valor, 0) + 1);
-        }
-        for (int count : contador.values()) {
-            if (count == 4) return true;
-        }
-        return false;
-    }
-
-    private boolean isFull(ArrayList<Carta> c) {
-        Map<String, Integer> contador = new HashMap<>();
-        for (Carta carta : c) {
-            String vp = carta.valorPalo();
-            String valor = vp.substring(0, vp.length() - 1);
-            contador.put(valor, contador.getOrDefault(valor, 0) + 1);
-        }
-        boolean hayTrio = false;
-        boolean hayPar = false;
-        for (int repeticiones : contador.values()) {
-            if (repeticiones == 3) hayTrio = true;
-            else if (repeticiones == 2) hayPar = true;
-        }
-        return hayTrio && hayPar;
-    }
-
-    private Map<String, Integer> contarCartasRepetidas(List<String> lista) {
-        Map<String, Integer> conteo = new HashMap<>();
-        for (String elemento : lista) {
-            conteo.put(elemento, conteo.getOrDefault(elemento, 0) + 1);
-        }
-        return conteo;
-    }
-
-    private boolean isColor(ArrayList<Carta> c) {
-        if (c.isEmpty()) return false;
-        List<Character> palos = new ArrayList<>();
-        for (Carta carta : c) {
-            String vp = carta.valorPalo();
-            palos.add(vp.charAt(vp.length() - 1));
-        }
-        return isAllPalosEquals(palos);
-    }
-
-    private boolean isAllPalosEquals(List<Character> lista) {
-        if (lista.isEmpty()) return false;
-        char primerPalo = lista.get(0);
-        for (char palo : lista) {
-            if (palo != primerPalo) return false;
-        }
-        return true;
-    }
-
-    private int isTrioParDobleParCartaAlta(ArrayList<Carta> c) {
-        Map<String, Integer> contador = new HashMap<>();
-        for (Carta carta : c) {
-            String vp = carta.valorPalo();
-            String valor = vp.substring(0, vp.length() - 1);
-            contador.put(valor, contador.getOrDefault(valor, 0) + 1);
-        }
-
-        int pares = 0;
-        boolean trio = false;
-
-        for (int cantidad : contador.values()) {
-            if (cantidad == 3) {
-                trio = true;
-            } else if (cantidad == 2) {
-                pares++;
-            }
-        }
-        if (trio) {
-            return 1;
-        } else if (pares == 2) {
-            return 2;
-        } else if (pares == 1) {
-            return 3;
-        } else {
-            return 4;
+            System.out.println("Empate: " + hv1.rank);
         }
     }
 }
