@@ -9,17 +9,17 @@ public class JuegoPoker {
         ArrayList<Carta> cartas = new ArrayList<>();
         ArrayList<Carta> cartas2 = new ArrayList<>();
 
-        cartas.add(new Carta("2H"));
-        cartas.add(new Carta("5D"));
-        cartas.add(new Carta("7S"));
-        cartas.add(new Carta("9C"));
-        cartas.add(new Carta("QH"));
+        cartas.add(new Carta("6C"));
+        cartas.add(new Carta("7D"));
+        cartas.add(new Carta("8S"));
+        cartas.add(new Carta("9H"));
+        cartas.add(new Carta("TD"));
 
-        cartas2.add(new Carta("2C"));
-        cartas2.add(new Carta("3C"));
-        cartas2.add(new Carta("4C"));
-        cartas2.add(new Carta("5C"));
-        cartas2.add(new Carta("6C"));
+        cartas2.add(new Carta("QC"));
+        cartas2.add(new Carta("QD"));
+        cartas2.add(new Carta("QC"));
+        cartas2.add(new Carta("3S"));
+        cartas2.add(new Carta("5D"));
 
 
 
