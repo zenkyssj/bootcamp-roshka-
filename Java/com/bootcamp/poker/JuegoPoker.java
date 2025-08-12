@@ -21,12 +21,9 @@ public class JuegoPoker {
         cartas2.add(new Carta("2H"));
         cartas2.add(new Carta("5S"));
 
-
-
         Poker poker = new Poker(cartas, cartas2);
 
         poker.combinationManager();
-
 
         System.out.println("\nProbabilidad de obtener Escalera de Color: 0.00154%");
         System.out.println("Probabilidad de obtener Poker: 0.0240%");
