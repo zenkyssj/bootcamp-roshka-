@@ -1,0 +1,145 @@
+.sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 25vw;
+    height: 100vh;
+    color: white;
+    background: black;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;   
+    align-items: center;
+}
+
+.sidebar-elements{
+    position:fixed;
+    
+}
+
+.sidebar-elements a{
+    color: #E6E6E6;
+    text-decoration: none;
+    font-family: 'Roboro', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-elements a::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #E6E6E6;
+    transition: width 0.3s ease;
+}
+
+.sidebar-elements a:hover{
+    transform: translateY(-5px);
+}
+
+.sidebar-elements a:hover::after{
+    width: 100%;
+}
+
+.about-me{
+    background: #292929;
+    width: 60%;             
+    margin: 0 auto;         
+    padding: 30px;          
+    min-height: 200px;      
+    border-radius: 10px;    
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-me p{
+    color: #E6E6E6;
+    line-height: 1.6;
+    text-align: justify;
+    margin: 15px 0;
+}
+
+.about-me h2{
+    text-align: center;
+}
+
+.about-me:hover{
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+}
+
+.about-me:hover h2{
+    transform: scale(1.15);
+}
+
+.about-me:hover p{
+    transform: scale(1.05);
+}
+.main-content{
+    position: fixed;
+    background: black;
+    left: 0;
+    top: 0;
+    margin-left: 25vw;
+    padding: 20px;
+    width: 75vw; 
+    height: 100vh;    
+    box-sizing: border-box;
+    border-left: 2px solid ;
+    border-image: linear-gradient(to bottom, transparent, #D4D4D4, transparent) 1;
+    font-family: 'Poppins' , sans-serif;
+}
+
+.main-content h1{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    color:#D4D4D4;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.main-content h1:hover{
+    transform: scale(1.2);
+}
+
+.main-content h2{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 2rem;
+    color: #39CBDB;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.main-content h2:hover{
+    transform: scale(1.15);
+}
+.main-content h3{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #BFAF39;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.main-content h3:hover{
+    transform: scale(1.1);
+}
+
+.main-content p{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    transition: transform 0.3s ease;
+}
+
+
+
+
