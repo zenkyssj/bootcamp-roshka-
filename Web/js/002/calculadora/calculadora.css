@@ -1,0 +1,113 @@
+
+.contenedor-calculadora{
+    position: fixed;
+    background: lightgray;
+    width: 300px;
+    height: 420px;
+    border-radius: 10px;
+    box-shadow: 0 10px gray, 0 10px 5px rgba(0,0,0,0.2);
+}
+
+.contenedor-pantalla{
+    position: relative;
+    background: white;
+    padding: 1.3rem;
+    font-size: 1.4rem;
+    text-align: left;
+    border-radius: 5px;
+    width: 240px;
+    height: 20px;
+    top: 9px;
+    left: 9px;
+    box-shadow: inset 0px 5px 9px rgb(0,0,0,0.5); 
+    font-family: monospace;
+    font-weight: bold;
+    color: gray;
+}
+
+.btn-container{
+    position: relative;
+    background: lightgray;
+    width: 250px;
+    height: 300px;
+    top: 30px;
+    left: 22px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+
+}
+.btn{
+    background: #60C481;
+    border-radius: 5px;
+    box-shadow: 0 6px #46B065, 0 10px 5px rgba(0,0,0,0.2);
+    border: none;
+    cursor: pointer;
+    font-family: monospace;
+    font-weight: bold;
+    color: lightgray;
+}
+
+.btn:active{
+    transform: translateY(4px);
+    box-shadow: 0 2px #46B065, 0 5px 3px rgba(0,0,0,0.2);
+}
+
+.btn:hover{
+    background: #4DB86C;
+}
+
+#cero{
+    grid-column: span 2;
+}
+
+#igual {
+    grid-row: span 2;
+}
+
+#borrar { 
+    background: #FF7C63;
+    box-shadow: 0 6px #DE583E, 0 10px 5px rgba(0,0,0,0.2);
+}
+
+#borrar:hover{
+    background: #ED664C;
+}
+
+#borrar:active{
+    box-shadow: 0 2px #DE583E, 0 5px 3px rgba(0,0,0,0.2);
+}
+
+#c{
+    background: #FCD181;
+    box-shadow: 0 6px #E3B562, 0 10px 5px rgba(0,0,0,0.2);
+
+}
+
+#c:hover{
+    background: #F0C26E;
+}
+
+#c:active{
+    box-shadow: 0 2px #E3B562, 0 5px 3px rgba(0,0,0,0.2);
+}
+
+#igual{
+    background: #70D4D4;
+    box-shadow: 0 6px #56BABA, 0 10px 5px rgba(0,0,0,0.2);
+}
+
+#igual:hover{
+    background: #60C4C4;
+}
+
+#igual:active{
+    box-shadow: 0 2px #56BABA, 0 5px 3px rgba(0,0,0,0.2);
+}
+body{
+    min-height: 100vh;
+    background-color: black;
+    display: grid;
+    place-items: center;
+}
+

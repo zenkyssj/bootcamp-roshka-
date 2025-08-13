@@ -1,0 +1,84 @@
+body{
+    box-sizing: border-box;
+    place-items: center;
+}
+
+.container{
+    position: fixed;
+    background: #48BFFF;
+    width: 500px;
+    height: 600px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px #48BFFF;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-container{
+    border-radius: .5rem;
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.number-container{
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 2rem;
+}
+
+.dados-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.dado{
+    background: white;
+    color: black;
+    border: none;
+    padding: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 4px white;
+    font-size: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1rem;
+    justify-content: center;
+}
+
+.dado-number{
+    font-size: 2rem;
+}
+
+.btn{
+    background-color: #006DA7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 3px #005D8F, 0 10px 5px rgba(0,0,0,0.2);
+    height: 40px;
+    font-family: monospace;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.btn:active{
+    transform: translateY(4px);
+    box-shadow: 0 2px #005D8F, 0 5px 3px rgba(0,0,0,0.2);
+}
+
+.btn:hover{
+    background-color: #006396;
+}
