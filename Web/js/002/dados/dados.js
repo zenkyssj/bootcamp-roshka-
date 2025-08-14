@@ -22,25 +22,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btn.addEventListener('click', () => {
         dadosContainer.innerHTML = '';
-        let randomNum = Math.floor(Math.random() * 6) + 1;
-        numberGenerated.textContent = randomNum + " dados generados";
-        for (let i = 0; i < randomNum; i++) {
+        const totalDados = 5;
+        let totalNumbers = [];
+        for (let i = 0; i < totalDados; i++) {
             const dado = document.createElement('div');
             dado.className = 'dado';
-            let totalAsterisks = i + 1; 
-                
-            
-            const filas = Math.ceil(totalAsterisks / 3);
+        
+            let diceRoll = Math.floor(Math.random() * 6) + 1;
+            totalNumbers.push(diceRoll);
+
+            const filas = Math.ceil(diceRoll / 3);
             for (let fila = 0; fila < filas; fila++) {
                 const rowDiv = document.createElement('div');
-                
+            
                 rowDiv.style.gridColumn = '1 / -1';
-                
-                let cantidad = (fila === filas - 1) ? totalAsterisks - fila * 3 : 3;
+
+                let cantidad = (fila === filas - 1) ? diceRoll - fila * 3 : 3;
                 rowDiv.textContent = '*'.repeat(cantidad);
                 dado.appendChild(rowDiv);
             }
             dadosContainer.appendChild(dado);
         }
+
+        numberGenerated.textContent = "Dados Generados: " + totalNumbers;
     });
 });
