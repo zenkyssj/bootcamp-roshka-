@@ -116,3 +116,22 @@ INNER JOIN moneda m
 GROUP BY f.id, c.id, c.nombre, c.apellido, ft.nombre, m.nombre, f.fecha_emision, f.fecha_vencimiento
 ORDER BY total DESC;
 
+-- Totales de facturas con IVA 10%
+SELECT f.id AS factura_id,
+       f.fecha_emision,
+       f.fecha_vencimiento,
+       c.id AS cliente_id,
+       c.nombre,
+       c.apellido,
+       SUM(fd.cantidad * p.precio) AS total_sin_iva,
+       SUM(fd.cantidad * p.precio) * 0.10 AS iva_10,
+       SUM(fd.cantidad * p.precio) * 1.10 AS total_con_iva
+FROM factura f
+INNER JOIN cliente c
+    ON c.id = f.cliente_id
+INNER JOIN factura_detalle fd
+    ON fd.factura_id = f.id
+INNER JOIN producto p
+    ON p.id = fd.producto_id
+GROUP BY f.id, c.id, c.nombre, c.apellido, f.fecha_emision, f.fecha_vencimiento
+ORDER BY total_sin_iva DESC;
