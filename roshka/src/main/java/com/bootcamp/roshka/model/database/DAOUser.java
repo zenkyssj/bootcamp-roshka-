@@ -196,7 +196,7 @@ public class DAOUser implements IDAOUser {
                     "fecha_nacimiento = ?, " +
                     "dias_vacaciones_restante = ?, " +
                     "requiere_cambio_contrasena = ? " +
-                    "WHERE id_usuario = ?";
+                    "WHERE id_usuario = ? RETURNING fecha_ingreso, antiguedad, dias_vacaciones, id_cargo, fecha_nacimiento";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -217,9 +217,21 @@ public class DAOUser implements IDAOUser {
             ps.setBoolean(15, user.isRequiere_cambio_contrasena());
             ps.setInt(16, id);
 
-            int rows = ps.executeUpdate();
+            //int rows = ps.executeUpdate();
 
-            System.out.println("Filas actualizadas: " + rows);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+            }
+            System.out.println("Usuario actualizado");
 
 
 
@@ -227,7 +239,7 @@ public class DAOUser implements IDAOUser {
             e.printStackTrace();
             return null;
         }
-        return null;
+        return user;
     }
 
     @Override
