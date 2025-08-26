@@ -1,9 +1,11 @@
 package com.bootcamp.roshka.model.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import java.time.Period;
 import java.util.Date;
 
-public class UserDto {
+public class UserDto extends RepresentationModel<UserDto> {
 
     private int id_usuario;
     private String nombre;

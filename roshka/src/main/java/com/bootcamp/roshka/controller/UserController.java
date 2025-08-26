@@ -6,10 +6,16 @@ import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 
 import java.net.URI;
 import java.util.List;
@@ -23,19 +29,47 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("users")
-    public List<UserDto> getAll (){
-        System.out.println("llamando al servicio...");
-        return userService.getAllUsers();
+    @GetMapping
+    public RepresentationModel<?> root(){
+        RepresentationModel<?> model = new RepresentationModel<>();
+        model.add(linkTo(methodOn(UserController.class).getAll()).withRel("all-users"));
+        model.add(linkTo(methodOn(UserController.class).getById(0)).withRel("usuario-por-id"));
+        model.add(linkTo(methodOn(UserController.class).add(null)).withRel("añadir-usuario"));
+        model.add(linkTo(methodOn(UserController.class).update(0, null)).withRel("actualizar-usuario"));
+        model.add(linkTo(methodOn(UserController.class).delete(0)).withRel("eliminar-usuario"));
 
+        return model;
+    }
+
+    @GetMapping("users")
+    public ResponseEntity<List<UserDto>> getAll() {
+        var users = userService.getAllUsers();
+
+        List<UserDto> list = users.stream().map(user -> {
+            user.add(linkTo(methodOn(UserController.class).getById(user.getId_usuario())).withSelfRel());
+            user.add(linkTo(methodOn(UserController.class).update(user.getId_usuario(), null)).withRel("actualizar"));
+            user.add(linkTo(methodOn(UserController.class).delete(user.getId_usuario())).withRel("eliminar"));
+            return user;
+        }).toList();
+
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("user/{id}")
-    public ResponseEntity getById(@PathVariable int id){
+    public ResponseEntity<UserDto> getById(@PathVariable int id){
         System.out.println("llamando al servicio..."); // Para debug
 
         var user = userService.getById(id);
-        return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+        if (user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        user.add(linkTo(methodOn(UserController.class).getById(id)).withSelfRel());
+        user.add(linkTo(methodOn(UserController.class).update(id, null)).withRel("actualizar"));
+        user.add(linkTo(methodOn(UserController.class).delete(id)).withRel("eliminar"));
+        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("add")
@@ -44,7 +78,10 @@ public class UserController {
 
         var user = userService.add(insertDto);
 
-
+        user.add(linkTo(methodOn(UserController.class).getById(user.getId_usuario())).withSelfRel());
+        user.add(linkTo(methodOn(UserController.class).update(user.getId_usuario(), null)).withRel("actualizar"));
+        user.add(linkTo(methodOn(UserController.class).delete(user.getId_usuario())).withRel("eliminar"));
+        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/usuarios/user/{id}")
@@ -60,7 +97,17 @@ public class UserController {
         System.out.println("llamando al servicio..."); //Para debug
 
         var user = userService.update(updateDto, id);
-        return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+
+        if (user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        user.add(linkTo(methodOn(UserController.class).getById(user.getId_usuario())).withSelfRel());
+        user.add(linkTo(methodOn(UserController.class).update(user.getId_usuario(), null)).withRel("actualizar"));
+        user.add(linkTo(methodOn(UserController.class).delete(user.getId_usuario())).withRel("eliminar"));
+        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
+
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("delete/{id}")
@@ -68,7 +115,14 @@ public class UserController {
         System.out.println("llamando al servicio...");
 
         var user = userService.delete(id);
-        return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+
+        if (user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
+
+        return ResponseEntity.ok(user);
     }
 
 }
