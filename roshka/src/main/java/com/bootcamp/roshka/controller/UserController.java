@@ -5,6 +5,7 @@ import com.bootcamp.roshka.model.service.IUserService;
 import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;
+import jakarta.validation.Valid;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("/usuarios")
-    public ResponseEntity<UserDto> add(@RequestBody UserInsertDto insertDto){
+    public ResponseEntity<UserDto> add(@Valid @RequestBody UserInsertDto insertDto){
         System.out.println("llamando al servicio..."); // Para debug
 
         var user = userService.add(insertDto);
@@ -89,7 +90,7 @@ public class UserController {
     }
 
     @PutMapping("usuarios/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable int id, @RequestBody UserUpdateDto updateDto){
+    public ResponseEntity<UserDto> update(@PathVariable int id, @Valid @RequestBody UserUpdateDto updateDto){
         System.out.println("llamando al servicio..."); //Para debug
 
         var user = userService.update(updateDto, id);

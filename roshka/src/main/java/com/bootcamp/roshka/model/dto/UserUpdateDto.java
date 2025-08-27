@@ -1,16 +1,25 @@
 package com.bootcamp.roshka.model.dto;
 
+import jakarta.validation.constraints.*;
+
 import java.sql.Date;
 
 public class UserUpdateDto {
+    @NotNull @NotBlank
     private String nombre;
+    @NotNull @NotBlank
     private String apellido;
+    @NotNull
     private int nro_cedula;
+    @Email @NotBlank @NotNull
     private String correo;
+    @NotNull
     private int id_rol;
+    @NotNull
     private Date fecha_ingreso;
     private int dias_vacaciones;
     private boolean estado;
+    @NotBlank @Size(min=8, message = "La contraseña debe tener al menos 8 caracteres")
     private String contrasena;
     private String telefono;
     private int id_equipo;
