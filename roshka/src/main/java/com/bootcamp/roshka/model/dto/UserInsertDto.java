@@ -1,33 +1,52 @@
 package com.bootcamp.roshka.model.dto;
 
 import jakarta.validation.constraints.*;
-import org.apache.logging.log4j.message.Message;
 
 import java.sql.Date;
 
 public class UserInsertDto {
 
+    @NotBlank
     @NotNull
     private String nombre;
+
+    @NotBlank
     @NotNull
     private String apellido;
+
     @NotNull
     private int nro_cedula;
-    @Email @NotBlank @NotNull
+
+    @Email
+    @NotBlank
+    @NotNull
     private String correo;
+
     @NotNull
     private int id_rol;
+
     @NotNull
+    @FutureOrPresent
     private Date fecha_ingreso;
+
     private int dias_vacaciones;
+
     private boolean estado;
+
     @NotBlank @Size(min=8, message = "La contraseña debe tener al menos 8 caracteres")
     private String contrasena;
+
     private String telefono;
+
     private int id_equipo;
+
     private int id_cargo;
+
+    @Past
     private Date fecha_nacimiento;
+
     private int dias_vacaciones_restante;
+
     private boolean requiere_cambio_contrasena;
 
     public String getNombre() {

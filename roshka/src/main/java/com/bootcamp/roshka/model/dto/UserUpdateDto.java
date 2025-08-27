@@ -5,27 +5,48 @@ import jakarta.validation.constraints.*;
 import java.sql.Date;
 
 public class UserUpdateDto {
-    @NotNull @NotBlank
+
+    @NotNull
+    @NotBlank
     private String nombre;
-    @NotNull @NotBlank
+
+    @NotNull
+    @NotBlank
     private String apellido;
+
     @NotNull
     private int nro_cedula;
-    @Email @NotBlank @NotNull
+
+    @Email
+    @NotBlank
+    @NotNull
     private String correo;
+
     @NotNull
     private int id_rol;
+
     @NotNull
+    @FutureOrPresent
     private Date fecha_ingreso;
+
     private int dias_vacaciones;
+
     private boolean estado;
+
     @NotBlank @Size(min=8, message = "La contraseña debe tener al menos 8 caracteres")
     private String contrasena;
+
     private String telefono;
+
     private int id_equipo;
+
     private int id_cargo;
+
+    @Past
     private Date fecha_nacimiento;
+
     private int dias_vacaciones_restante;
+
     private boolean requiere_cambio_contrasena;
 
     public String getNombre() {
