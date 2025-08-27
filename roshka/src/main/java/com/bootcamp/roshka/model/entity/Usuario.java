@@ -1,7 +1,4 @@
-package com.bootcamp.roshka.model;
-
-import java.time.Period;
-import java.util.Date;
+package com.bootcamp.roshka.model.entity;
 
 public class Usuario {
     private int id_usuario;

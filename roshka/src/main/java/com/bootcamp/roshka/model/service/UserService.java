@@ -1,13 +1,12 @@
-package com.bootcamp.roshka.model;
+package com.bootcamp.roshka.model.service;
 
+import com.bootcamp.roshka.model.entity.Usuario;
 import com.bootcamp.roshka.model.database.IDAOUser;
 import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 
 @Service

@@ -1,4 +1,4 @@
-package com.bootcamp.roshka.model;
+package com.bootcamp.roshka.model.service;
 
 import java.util.List;
 

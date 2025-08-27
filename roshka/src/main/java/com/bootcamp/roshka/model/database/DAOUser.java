@@ -1,12 +1,8 @@
 package com.bootcamp.roshka.model.database;
 
-import com.bootcamp.roshka.model.Usuario;
-import com.bootcamp.roshka.model.dto.UserDto;
-import com.bootcamp.roshka.model.dto.UserInsertDto;
-import com.bootcamp.roshka.model.dto.UserUpdateDto;
+import com.bootcamp.roshka.model.entity.Usuario;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

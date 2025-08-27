@@ -1,9 +1,6 @@
 package com.bootcamp.roshka.model.database;
 
-import com.bootcamp.roshka.model.Usuario;
-import com.bootcamp.roshka.model.dto.UserDto;
-import com.bootcamp.roshka.model.dto.UserInsertDto;
-import com.bootcamp.roshka.model.dto.UserUpdateDto;
+import com.bootcamp.roshka.model.entity.Usuario;
 
 import java.util.List;
 

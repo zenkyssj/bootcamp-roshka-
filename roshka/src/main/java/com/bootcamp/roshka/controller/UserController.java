@@ -1,19 +1,15 @@
 package com.bootcamp.roshka.controller;
 
 
-import com.bootcamp.roshka.model.IUserService;
+import com.bootcamp.roshka.model.service.IUserService;
 import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RepresentationModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 
