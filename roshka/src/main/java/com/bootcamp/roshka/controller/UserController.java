@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api")
 public class UserController {
     private final IUserService<UserDto, UserInsertDto, UserUpdateDto> userService;
 
@@ -37,7 +37,7 @@ public class UserController {
         return model;
     }
 
-    @GetMapping("users")
+    @GetMapping("/usuarios")
     public ResponseEntity<List<UserDto>> getAll() {
         var users = userService.getAllUsers();
 
@@ -51,7 +51,7 @@ public class UserController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/usuarios/{id}")
     public ResponseEntity<UserDto> getById(@PathVariable int id){
         System.out.println("llamando al servicio..."); // Para debug
 
@@ -68,7 +68,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("add")
+    @PostMapping("/usuarios")
     public ResponseEntity<UserDto> add(@RequestBody UserInsertDto insertDto){
         System.out.println("llamando al servicio..."); // Para debug
 
@@ -88,7 +88,7 @@ public class UserController {
 
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("usuarios/{id}")
     public ResponseEntity<UserDto> update(@PathVariable int id, @RequestBody UserUpdateDto updateDto){
         System.out.println("llamando al servicio..."); //Para debug
 
@@ -106,7 +106,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("usuarios/{id}")
     public ResponseEntity<UserDto> delete(@PathVariable int id){
         System.out.println("llamando al servicio...");
 

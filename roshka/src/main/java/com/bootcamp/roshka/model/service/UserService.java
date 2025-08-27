@@ -188,7 +188,7 @@ public class UserService implements IUserService<UserDto, UserInsertDto, UserUpd
 
         UserDto userDto = new UserDto();
 
-        userDto.setId_equipo(id);
+        userDto.setId_usuario(user.getId_usuario());
         userDto.setNombre(user.getNombre());
         userDto.setApellido(user.getApellido());
         userDto.setNro_cedula(user.getNro_cedula());
