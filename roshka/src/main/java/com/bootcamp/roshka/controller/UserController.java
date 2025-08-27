@@ -29,7 +29,7 @@ public class UserController {
     @GetMapping
     public RepresentationModel<?> root(){
         RepresentationModel<?> model = new RepresentationModel<>();
-        model.add(linkTo(methodOn(UserController.class).getAll()).withRel("all-users"));
+        model.add(linkTo(methodOn(UserController.class).getAll(null, null, null)).withRel("all-users"));
         model.add(linkTo(methodOn(UserController.class).getById(0)).withRel("usuario-por-id"));
         model.add(linkTo(methodOn(UserController.class).add(null)).withRel("añadir-usuario"));
         model.add(linkTo(methodOn(UserController.class).update(0, null)).withRel("actualizar-usuario"));
@@ -39,17 +39,49 @@ public class UserController {
     }
 
     @GetMapping("/usuarios")
-    public ResponseEntity<List<UserDto>> getAll() {
-        var users = userService.getAllUsers();
+    public ResponseEntity<List<UserDto>> getAll(
+            @RequestParam(value = "rol", required = false) Integer idRol,
+            @RequestParam(value = "equipo", required = false) Integer idEquipo,
+            @RequestParam(value = "cargo", required = false) Integer idCargo) {
+        List<UserDto> users;
 
-        List<UserDto> list = users.stream().map(user -> {
+
+        if (idRol != null && idEquipo != null && idCargo != null) {
+            users = userService.getAllUsersFiltered(idRol, idEquipo, idCargo);
+
+        } else if (idRol != null && idEquipo != null ){
+            users = userService.getAllUsersByRolAndEquipo(idRol, idEquipo);
+
+        } else if (idRol != null && idCargo != null){
+            users = userService.getAllUsersByRolAndCargo(idRol, idCargo);
+
+        } else if (idEquipo != null && idCargo != null){
+            users = userService.getAllUsersByEquipoAndCargo(idEquipo, idCargo);
+
+        } else if (idRol != null){
+            users = userService.getAllUsersByRol(idRol);
+
+        } else if (idEquipo != null){
+            users = userService.getAllUsersByEquipo(idEquipo);
+
+        } else if (idCargo != null){
+            users = userService.getAllUsersByCargo(idCargo);
+
+        } else {
+            users = userService.getAllUsers();
+
+        }
+
+
+
+        List<UserDto> usersList = users.stream().map(user -> {
             user.add(linkTo(methodOn(UserController.class).getById(user.getId_usuario())).withSelfRel());
             user.add(linkTo(methodOn(UserController.class).update(user.getId_usuario(), null)).withRel("actualizar"));
             user.add(linkTo(methodOn(UserController.class).delete(user.getId_usuario())).withRel("eliminar"));
             return user;
         }).toList();
 
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(usersList);
     }
 
     @GetMapping("/usuarios/{id}")
@@ -64,7 +96,7 @@ public class UserController {
         user.add(linkTo(methodOn(UserController.class).getById(id)).withSelfRel());
         user.add(linkTo(methodOn(UserController.class).update(id, null)).withRel("actualizar"));
         user.add(linkTo(methodOn(UserController.class).delete(id)).withRel("eliminar"));
-        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
+        user.add(linkTo(methodOn(UserController.class).getAll(null, null, null)).withRel("todos-usuarios"));
 
         return ResponseEntity.ok(user);
     }
@@ -78,7 +110,7 @@ public class UserController {
         user.add(linkTo(methodOn(UserController.class).getById(user.getId_usuario())).withSelfRel());
         user.add(linkTo(methodOn(UserController.class).update(user.getId_usuario(), null)).withRel("actualizar"));
         user.add(linkTo(methodOn(UserController.class).delete(user.getId_usuario())).withRel("eliminar"));
-        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
+        user.add(linkTo(methodOn(UserController.class).getAll(null, null, null)).withRel("todos-usuarios"));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/usuarios/user/{id}")
@@ -102,7 +134,7 @@ public class UserController {
         user.add(linkTo(methodOn(UserController.class).getById(user.getId_usuario())).withSelfRel());
         user.add(linkTo(methodOn(UserController.class).update(user.getId_usuario(), null)).withRel("actualizar"));
         user.add(linkTo(methodOn(UserController.class).delete(user.getId_usuario())).withRel("eliminar"));
-        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
+        user.add(linkTo(methodOn(UserController.class).getAll(null, null, null)).withRel("todos-usuarios"));
 
         return ResponseEntity.ok(user);
     }
@@ -117,7 +149,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        user.add(linkTo(methodOn(UserController.class).getAll()).withRel("todos-usuarios"));
+        user.add(linkTo(methodOn(UserController.class).getAll(null, null, null)).withRel("todos-usuarios"));
 
         return ResponseEntity.ok(user);
     }

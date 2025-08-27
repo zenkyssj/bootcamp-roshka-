@@ -65,6 +65,359 @@ public class DAOUser implements IDAOUser {
     }
 
     @Override
+    public List<Usuario> getAllUsersByRol(int idRol) {
+        System.out.println("Dentro de DAOUser getAllUsersByRol");
+        try (Connection conn = Conexion.getConnection()){
+            List<Usuario> usuarios = new ArrayList<>();
+
+            String sql = "SELECT * FROM usuarios WHERE id_rol = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idRol);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Usuario user = new Usuario();
+                user.setId_usuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("nombre"));
+                user.setApellido(rs.getString("apellido"));
+                user.setNro_cedula(rs.getInt("nro_cedula"));
+                user.setCorreo(rs.getString("correo"));
+                user.setId_rol(rs.getInt("id_rol"));
+                user.setFecha_ingreso(rs.getDate("fecha_ingreso"));
+
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setEstado(rs.getBoolean("estado"));
+                user.setContrasena(rs.getString("contrasena"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setId_equipo(rs.getInt("id_equipo"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+                user.setDias_vacaciones_restante(rs.getInt("dias_vacaciones_restante"));
+                user.setRequiere_cambio_contrasena(rs.getBoolean("requiere_cambio_contrasena"));
+
+                usuarios.add(user);
+            }
+
+            return usuarios;
+        } catch (SQLException e){
+            e.printStackTrace();
+            return List.of();
+        }
+
+    }
+
+    @Override
+    public List<Usuario> getAllUsersByEquipo(int idEquipo) {
+        System.out.println("Dentro de DAOUser getAllUsersByEquipo");
+        try (Connection conn = Conexion.getConnection()){
+            List<Usuario> usuarios = new ArrayList<>();
+
+            String sql = "SELECT * FROM usuarios WHERE id_equipo = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idEquipo);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Usuario user = new Usuario();
+                user.setId_usuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("nombre"));
+                user.setApellido(rs.getString("apellido"));
+                user.setNro_cedula(rs.getInt("nro_cedula"));
+                user.setCorreo(rs.getString("correo"));
+                user.setId_rol(rs.getInt("id_rol"));
+                user.setFecha_ingreso(rs.getDate("fecha_ingreso"));
+
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setEstado(rs.getBoolean("estado"));
+                user.setContrasena(rs.getString("contrasena"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setId_equipo(rs.getInt("id_equipo"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+                user.setDias_vacaciones_restante(rs.getInt("dias_vacaciones_restante"));
+                user.setRequiere_cambio_contrasena(rs.getBoolean("requiere_cambio_contrasena"));
+
+                usuarios.add(user);
+            }
+
+            return usuarios;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    @Override
+    public List<Usuario> getAllUsersByCargo(int idCargo) {
+        System.out.println("Dentro de DAOUser getAllUsersByCargo");
+        try (Connection conn = Conexion.getConnection()){
+            List<Usuario> usuarios = new ArrayList<>();
+
+            String sql = "SELECT * FROM usuarios WHERE id_cargo = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idCargo);
+
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()){
+                Usuario user = new Usuario();
+                user.setId_usuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("nombre"));
+                user.setApellido(rs.getString("apellido"));
+                user.setNro_cedula(rs.getInt("nro_cedula"));
+                user.setCorreo(rs.getString("correo"));
+                user.setId_rol(rs.getInt("id_rol"));
+                user.setFecha_ingreso(rs.getDate("fecha_ingreso"));
+
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setEstado(rs.getBoolean("estado"));
+                user.setContrasena(rs.getString("contrasena"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setId_equipo(rs.getInt("id_equipo"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+                user.setDias_vacaciones_restante(rs.getInt("dias_vacaciones_restante"));
+                user.setRequiere_cambio_contrasena(rs.getBoolean("requiere_cambio_contrasena"));
+
+                usuarios.add(user);
+
+            }
+
+            return usuarios;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    @Override
+    public List<Usuario> getAllUsersByRolAndEquipo(int idRol, int idEquipo) {
+        System.out.println("Dentro de DAOUser getAllUsersByRolAndEquipo");
+        try (Connection conn = Conexion.getConnection()){
+            List<Usuario> usuarios = new ArrayList<>();
+
+            String sql = "SELECT * FROM usuarios WHERE id_rol = ? AND id_equipo = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idRol);
+            ps.setInt(2, idEquipo);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Usuario user = new Usuario();
+                user.setId_usuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("nombre"));
+                user.setApellido(rs.getString("apellido"));
+                user.setNro_cedula(rs.getInt("nro_cedula"));
+                user.setCorreo(rs.getString("correo"));
+                user.setId_rol(rs.getInt("id_rol"));
+                user.setFecha_ingreso(rs.getDate("fecha_ingreso"));
+
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setEstado(rs.getBoolean("estado"));
+                user.setContrasena(rs.getString("contrasena"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setId_equipo(rs.getInt("id_equipo"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+                user.setDias_vacaciones_restante(rs.getInt("dias_vacaciones_restante"));
+                user.setRequiere_cambio_contrasena(rs.getBoolean("requiere_cambio_contrasena"));
+
+                usuarios.add(user);
+
+            }
+
+            return usuarios;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    @Override
+    public List<Usuario> getAllUsersByRolAndCargo(int idRol, int idCargo) {
+        System.out.println("Dentro de DAOUser getAllUsersByRolAndCargo");
+        try (Connection conn = Conexion.getConnection()){
+            List<Usuario> usuarios = new ArrayList<>();
+
+            String sql = "SELECT * FROM usuarios WHERE id_rol = ? AND id_cargo = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idRol);
+            ps.setInt(2, idCargo);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Usuario user = new Usuario();
+                user.setId_usuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("nombre"));
+                user.setApellido(rs.getString("apellido"));
+                user.setNro_cedula(rs.getInt("nro_cedula"));
+                user.setCorreo(rs.getString("correo"));
+                user.setId_rol(rs.getInt("id_rol"));
+                user.setFecha_ingreso(rs.getDate("fecha_ingreso"));
+
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setEstado(rs.getBoolean("estado"));
+                user.setContrasena(rs.getString("contrasena"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setId_equipo(rs.getInt("id_equipo"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+                user.setDias_vacaciones_restante(rs.getInt("dias_vacaciones_restante"));
+                user.setRequiere_cambio_contrasena(rs.getBoolean("requiere_cambio_contrasena"));
+
+                usuarios.add(user);
+
+            }
+
+            return usuarios;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    @Override
+    public List<Usuario> getAllUsersByEquipoAndCargo(int idEquipo, int idCargo) {
+        System.out.println("Dentro de DAOUser getAllUsersByEquipoAndCargo");
+        try (Connection conn = Conexion.getConnection()){
+            List<Usuario> usuarios = new ArrayList<>();
+
+            String sql = "SELECT * FROM usuarios WHERE id_equipo = ? AND id_cargo = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idEquipo);
+            ps.setInt(2, idCargo);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Usuario user = new Usuario();
+                user.setId_usuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("nombre"));
+                user.setApellido(rs.getString("apellido"));
+                user.setNro_cedula(rs.getInt("nro_cedula"));
+                user.setCorreo(rs.getString("correo"));
+                user.setId_rol(rs.getInt("id_rol"));
+                user.setFecha_ingreso(rs.getDate("fecha_ingreso"));
+
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setEstado(rs.getBoolean("estado"));
+                user.setContrasena(rs.getString("contrasena"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setId_equipo(rs.getInt("id_equipo"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+                user.setDias_vacaciones_restante(rs.getInt("dias_vacaciones_restante"));
+                user.setRequiere_cambio_contrasena(rs.getBoolean("requiere_cambio_contrasena"));
+
+                usuarios.add(user);
+
+            }
+
+            return usuarios;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    @Override
+    public List<Usuario> getAllUsersFiltered(int idRol, int idEquipo, int idCargo) {
+        System.out.println("Dentro de DAOUser getAllUsersFiltered");
+        try (Connection conn = Conexion.getConnection()){
+            List<Usuario> usuarios = new ArrayList<>();
+
+            String sql = "SELECT * FROM usuarios WHERE id_rol = ? AND id_equipo = ? AND id_cargo = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idRol);
+            ps.setInt(2, idEquipo);
+            ps.setInt(3, idCargo);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Usuario user = new Usuario();
+                user.setId_usuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("nombre"));
+                user.setApellido(rs.getString("apellido"));
+                user.setNro_cedula(rs.getInt("nro_cedula"));
+                user.setCorreo(rs.getString("correo"));
+                user.setId_rol(rs.getInt("id_rol"));
+                user.setFecha_ingreso(rs.getDate("fecha_ingreso"));
+
+                LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
+                Period periodo = Period.between(fechaIngreso, LocalDate.now());
+                String antiguedad = periodo.getYears() + " años, " + periodo.getMonths() + " meses, " + periodo.getDays() + " días";
+                user.setAntiguedad(antiguedad);
+
+                user.setDias_vacaciones(rs.getInt("dias_vacaciones"));
+                user.setEstado(rs.getBoolean("estado"));
+                user.setContrasena(rs.getString("contrasena"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setId_equipo(rs.getInt("id_equipo"));
+                user.setId_cargo(rs.getInt("id_cargo"));
+                user.setFecha_nacimiento(rs.getDate("fecha_nacimiento"));
+                user.setDias_vacaciones_restante(rs.getInt("dias_vacaciones_restante"));
+                user.setRequiere_cambio_contrasena(rs.getBoolean("requiere_cambio_contrasena"));
+
+                usuarios.add(user);
+
+            }
+
+            return usuarios;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    @Override
     public Usuario findById(int id) {
         System.out.println("Dentro de DAOUser findById");
         try (Connection conn = Conexion.getConnection()) {

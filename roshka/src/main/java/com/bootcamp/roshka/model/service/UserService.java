@@ -49,6 +49,223 @@ public class UserService implements IUserService<UserDto, UserInsertDto, UserUpd
     }
 
     @Override
+    public List<UserDto> getAllUsersByRol(int idRol) {
+        System.out.println("Llamando getAllUsersByRol desde Service...");
+        var users = userDao.getAllUsersByRol(idRol);
+
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId_usuario(user.getId_usuario());
+            userDto.setNombre(user.getNombre());
+            userDto.setApellido(user.getApellido());
+            userDto.setNro_cedula(user.getNro_cedula());
+            userDto.setCorreo(user.getCorreo());
+            userDto.setId_rol(user.getId_rol());
+            userDto.setFecha_ingreso(user.getFecha_ingreso());
+
+            userDto.setAntiguedad(user.getAntiguedad());
+
+            userDto.setDias_vacaciones(user.getDias_vacaciones());
+            userDto.setEstado(user.isEstado());
+            userDto.setContrasena(user.getContrasena());
+            userDto.setTelefono(user.getTelefono());
+            userDto.setId_equipo(user.getId_equipo());
+            userDto.setId_cargo(user.getId_cargo());
+            userDto.setFecha_nacimiento(user.getFecha_nacimiento());
+            userDto.setDias_vacaciones_restante(user.getDias_vacaciones_restante());
+            userDto.setRequiere_cambio_contrasena(user.isRequiere_cambio_contrasena());
+
+            return userDto;
+        }).toList();
+    }
+
+    @Override
+    public List<UserDto> getAllUsersByEquipo(int idEquipo) {
+        System.out.println("Llamando getAllUsersByEquipo desde Service...");
+        var users = userDao.getAllUsersByEquipo(idEquipo);
+
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId_usuario(user.getId_usuario());
+            userDto.setNombre(user.getNombre());
+            userDto.setApellido(user.getApellido());
+            userDto.setNro_cedula(user.getNro_cedula());
+            userDto.setCorreo(user.getCorreo());
+            userDto.setId_rol(user.getId_rol());
+            userDto.setFecha_ingreso(user.getFecha_ingreso());
+
+            userDto.setAntiguedad(user.getAntiguedad());
+
+            userDto.setDias_vacaciones(user.getDias_vacaciones());
+            userDto.setEstado(user.isEstado());
+            userDto.setContrasena(user.getContrasena());
+            userDto.setTelefono(user.getTelefono());
+            userDto.setId_equipo(user.getId_equipo());
+            userDto.setId_cargo(user.getId_cargo());
+            userDto.setFecha_nacimiento(user.getFecha_nacimiento());
+            userDto.setDias_vacaciones_restante(user.getDias_vacaciones_restante());
+            userDto.setRequiere_cambio_contrasena(user.isRequiere_cambio_contrasena());
+
+            return userDto;
+        }).toList();
+    }
+
+    @Override
+    public List<UserDto> getAllUsersByCargo(int idCargo) {
+        System.out.println("Llamando getAllUsersByCargo desde Service...");
+        var users = userDao.getAllUsersByCargo(idCargo);
+
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId_usuario(user.getId_usuario());
+            userDto.setNombre(user.getNombre());
+            userDto.setApellido(user.getApellido());
+            userDto.setNro_cedula(user.getNro_cedula());
+            userDto.setCorreo(user.getCorreo());
+            userDto.setId_rol(user.getId_rol());
+            userDto.setFecha_ingreso(user.getFecha_ingreso());
+
+            userDto.setAntiguedad(user.getAntiguedad());
+
+            userDto.setDias_vacaciones(user.getDias_vacaciones());
+            userDto.setEstado(user.isEstado());
+            userDto.setContrasena(user.getContrasena());
+            userDto.setTelefono(user.getTelefono());
+            userDto.setId_equipo(user.getId_equipo());
+            userDto.setId_cargo(user.getId_cargo());
+            userDto.setFecha_nacimiento(user.getFecha_nacimiento());
+            userDto.setDias_vacaciones_restante(user.getDias_vacaciones_restante());
+            userDto.setRequiere_cambio_contrasena(user.isRequiere_cambio_contrasena());
+
+            return userDto;
+        }).toList();
+    }
+
+    @Override
+    public List<UserDto> getAllUsersByRolAndEquipo(int idRol, int idEquipo) {
+        System.out.println("Llamando getAllUsersByRolAndEquipo");
+        var users = userDao.getAllUsersByRolAndEquipo(idRol, idEquipo);
+
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId_usuario(user.getId_usuario());
+            userDto.setNombre(user.getNombre());
+            userDto.setApellido(user.getApellido());
+            userDto.setNro_cedula(user.getNro_cedula());
+            userDto.setCorreo(user.getCorreo());
+            userDto.setId_rol(user.getId_rol());
+            userDto.setFecha_ingreso(user.getFecha_ingreso());
+
+            userDto.setAntiguedad(user.getAntiguedad());
+
+            userDto.setDias_vacaciones(user.getDias_vacaciones());
+            userDto.setEstado(user.isEstado());
+            userDto.setContrasena(user.getContrasena());
+            userDto.setTelefono(user.getTelefono());
+            userDto.setId_equipo(user.getId_equipo());
+            userDto.setId_cargo(user.getId_cargo());
+            userDto.setFecha_nacimiento(user.getFecha_nacimiento());
+            userDto.setDias_vacaciones_restante(user.getDias_vacaciones_restante());
+            userDto.setRequiere_cambio_contrasena(user.isRequiere_cambio_contrasena());
+
+            return userDto;
+        }).toList();
+    }
+
+    @Override
+    public List<UserDto> getAllUsersByRolAndCargo(int idRol, int idCargo) {
+        System.out.println("Llamando getAllUsersByRolAndCargo");
+        var users = userDao.getAllUsersByRolAndCargo(idRol, idCargo);
+
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId_usuario(user.getId_usuario());
+            userDto.setNombre(user.getNombre());
+            userDto.setApellido(user.getApellido());
+            userDto.setNro_cedula(user.getNro_cedula());
+            userDto.setCorreo(user.getCorreo());
+            userDto.setId_rol(user.getId_rol());
+            userDto.setFecha_ingreso(user.getFecha_ingreso());
+
+            userDto.setAntiguedad(user.getAntiguedad());
+
+            userDto.setDias_vacaciones(user.getDias_vacaciones());
+            userDto.setEstado(user.isEstado());
+            userDto.setContrasena(user.getContrasena());
+            userDto.setTelefono(user.getTelefono());
+            userDto.setId_equipo(user.getId_equipo());
+            userDto.setId_cargo(user.getId_cargo());
+            userDto.setFecha_nacimiento(user.getFecha_nacimiento());
+            userDto.setDias_vacaciones_restante(user.getDias_vacaciones_restante());
+            userDto.setRequiere_cambio_contrasena(user.isRequiere_cambio_contrasena());
+
+            return userDto;
+        }).toList();
+    }
+
+    @Override
+    public List<UserDto> getAllUsersByEquipoAndCargo(int idEquipo, int idCargo) {
+        System.out.println("Llamando getAllUsersByEquipoAndCargo desde Service...");
+        var users = userDao.getAllUsersByEquipoAndCargo(idEquipo, idCargo);
+
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId_usuario(user.getId_usuario());
+            userDto.setNombre(user.getNombre());
+            userDto.setApellido(user.getApellido());
+            userDto.setNro_cedula(user.getNro_cedula());
+            userDto.setCorreo(user.getCorreo());
+            userDto.setId_rol(user.getId_rol());
+            userDto.setFecha_ingreso(user.getFecha_ingreso());
+
+            userDto.setAntiguedad(user.getAntiguedad());
+
+            userDto.setDias_vacaciones(user.getDias_vacaciones());
+            userDto.setEstado(user.isEstado());
+            userDto.setContrasena(user.getContrasena());
+            userDto.setTelefono(user.getTelefono());
+            userDto.setId_equipo(user.getId_equipo());
+            userDto.setId_cargo(user.getId_cargo());
+            userDto.setFecha_nacimiento(user.getFecha_nacimiento());
+            userDto.setDias_vacaciones_restante(user.getDias_vacaciones_restante());
+            userDto.setRequiere_cambio_contrasena(user.isRequiere_cambio_contrasena());
+
+            return userDto;
+        }).toList();
+    }
+
+    @Override
+    public List<UserDto> getAllUsersFiltered(int idRol, int idEquipo, int idCargo) {
+        System.out.println("Llamando getAllUsersFiltered desde Service...");
+        var users = userDao.getAllUsersFiltered(idRol, idEquipo, idCargo);
+
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId_usuario(user.getId_usuario());
+            userDto.setNombre(user.getNombre());
+            userDto.setApellido(user.getApellido());
+            userDto.setNro_cedula(user.getNro_cedula());
+            userDto.setCorreo(user.getCorreo());
+            userDto.setId_rol(user.getId_rol());
+            userDto.setFecha_ingreso(user.getFecha_ingreso());
+
+            userDto.setAntiguedad(user.getAntiguedad());
+
+            userDto.setDias_vacaciones(user.getDias_vacaciones());
+            userDto.setEstado(user.isEstado());
+            userDto.setContrasena(user.getContrasena());
+            userDto.setTelefono(user.getTelefono());
+            userDto.setId_equipo(user.getId_equipo());
+            userDto.setId_cargo(user.getId_cargo());
+            userDto.setFecha_nacimiento(user.getFecha_nacimiento());
+            userDto.setDias_vacaciones_restante(user.getDias_vacaciones_restante());
+            userDto.setRequiere_cambio_contrasena(user.isRequiere_cambio_contrasena());
+
+            return userDto;
+        }).toList();
+    }
+
+    @Override
     public UserDto getById(int id) {
         System.out.println("Llamando findById desde Service...");
         var user =  userDao.findById(id);
