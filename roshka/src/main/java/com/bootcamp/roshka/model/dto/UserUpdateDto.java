@@ -26,20 +26,24 @@ public class UserUpdateDto {
     private int id_rol;
 
     @NotNull
-    @FutureOrPresent
+    @PastOrPresent
     private Date fecha_ingreso;
 
     private int dias_vacaciones;
 
     private boolean estado;
 
-    @NotBlank @Size(min=8, message = "La contraseña debe tener al menos 8 caracteres")
+    @NotBlank
+    @NotNull
+    @Size(min=8, message = "La contraseña debe tener al menos 8 caracteres")
     private String contrasena;
 
     private String telefono;
 
+    @NotNull
     private int id_equipo;
 
+    @NotNull
     private int id_cargo;
 
     @Past

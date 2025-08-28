@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario</title>
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-back {
+            background-color: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            padding: 9px 15px;
+            border-radius: 4px;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .btn-back:hover {
+            background-color: #e0e0e0;
+        }
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        .page-title {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .user-id {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="page-title">Editar Usuario</h1>
+        <div class="user-id">ID de Usuario: <span th:text="${userId}"></span></div>
+        
+        <form th:action="@{/usuarios/{id}/editar(id=${userId})}" th:object="${usuario}" method="post">
+            
+            <div class="form-group">
+                <label class="required" for="nombre">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ingrese el nombre">
+                <div class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required" for="apellido">Apellido</label>
+                <input type="text" id="apellido" th:field="*{apellido}" placeholder="Ingrese el apellido">
+                <div class="error" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required" for="nro_cedula">Número de Cédula</label>
+                <input type="number" id="nro_cedula" th:field="*{nro_cedula}" placeholder="Ingrese el número de cédula">
+                <div class="error" th:if="${#fields.hasErrors('nro_cedula')}" th:errors="*{nro_cedula}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required" for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" th:field="*{correo}" placeholder="Ingrese el correo electrónico">
+                <div class="error" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required" for="id_rol">Rol</label>
+                <input type="number" id="id_rol" th:field="*{id_rol}" placeholder="Ingrese el ID del rol">
+                <div class="error" th:if="${#fields.hasErrors('id_rol')}" th:errors="*{id_rol}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required" for="fecha_ingreso">Fecha de Ingreso</label>
+                <input type="date" id="fecha_ingreso" th:field="*{fecha_ingreso}" placeholder="Ingrese la fecha de ingreso">
+                <div class="error" th:if="${#fields.hasErrors('fecha_ingreso')}" th:errors="*{fecha_ingreso}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dias_vacaciones">Días de Vacaciones</label>
+                <input type="number" id="dias_vacaciones" th:field="*{dias_vacaciones}" placeholder="Ingrese los días de vacaciones">
+                <div class="error" th:if="${#fields.hasErrors('dias_vacaciones')}" th:errors="*{dias_vacaciones}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <select id="estado" th:field="*{estado}">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="required" for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" th:field="*{contrasena}" placeholder="Ingrese la nueva contraseña">
+                <div class="error" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" th:field="*{telefono}" placeholder="Ingrese el teléfono">
+                <div class="error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_equipo">Equipo</label>
+                <input type="number" id="id_equipo" th:field="*{id_equipo}" placeholder="Ingrese el ID del equipo">
+                <div class="error" th:if="${#fields.hasErrors('id_equipo')}" th:errors="*{id_equipo}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_cargo">Cargo</label>
+                <input type="number" id="id_cargo" th:field="*{id_cargo}" placeholder="Ingrese el ID del cargo">
+                <div class="error" th:if="${#fields.hasErrors('id_cargo')}" th:errors="*{id_cargo}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fecha_nacimiento" th:field="*{fecha_nacimiento}" placeholder="Ingrese la fecha de nacimiento">
+                <div class="error" th:if="${#fields.hasErrors('fecha_nacimiento')}" th:errors="*{fecha_nacimiento}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dias_vacaciones_restante">Días de Vacaciones Restantes</label>
+                <input type="number" id="dias_vacaciones_restante" th:field="*{dias_vacaciones_restante}" placeholder="Ingrese los días de vacaciones restantes">
+                <div class="error" th:if="${#fields.hasErrors('dias_vacaciones_restante')}" th:errors="*{dias_vacaciones_restante}"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="requiere_cambio_contrasena">Requiere Cambio de Contraseña</label>
+                <select id="requiere_cambio_contrasena" th:field="*{requiere_cambio_contrasena}">
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">Actualizar Usuario</button>
+                <a th:href="@{/usuarios/{id}(id=${userId})}" class="btn-back">Ver Detalles</a>
+                <a th:href="@{/usuarios/listar}" class="btn-back">Volver a la Lista</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

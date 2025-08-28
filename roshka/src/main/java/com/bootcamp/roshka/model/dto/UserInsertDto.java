@@ -26,7 +26,7 @@ public class UserInsertDto {
     private int id_rol;
 
     @NotNull
-    @FutureOrPresent
+    @PastOrPresent
     private Date fecha_ingreso;
 
     private int dias_vacaciones;
@@ -38,8 +38,10 @@ public class UserInsertDto {
 
     private String telefono;
 
+    @NotNull
     private int id_equipo;
 
+    @NotNull
     private int id_cargo;
 
     @Past

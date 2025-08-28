@@ -3,7 +3,7 @@ package com.bootcamp.roshka.model.dto;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.Period;
-import java.util.Date;
+import java.sql.Date;
 
 public class UserDto extends RepresentationModel<UserDto> {
 
