@@ -1,0 +1,82 @@
+.button {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.button.primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.button.secondary {
+    background-color: #3f9cff;
+    color: white;
+}
+
+.button.disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.button.outlined {
+    background-color: transparent;
+    border: 2px solid #007bff;
+    color: #007bff;
+}
+
+.button.outlined-secondary {
+    background-color: transparent;
+    border: 2px solid #3f9cff;
+    color: #6c757d;
+}
+
+.button.outlined-disabled {
+    background-color: transparent;
+    border: 2px solid #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Hover states */
+.button.primary:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.button.secondary:hover:not(:disabled) {
+    background-color: #1787ff;
+}
+
+.button.outlined:hover:not(:disabled) {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.button.outlined-secondary:hover:not(:disabled) {
+    background-color: rgba(108, 117, 125, 0.1);
+}
+
+.icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.button.withIconLeft {
+    padding-left: 12px;
+}
+
+.button.withIconRight {
+    padding-right: 12px;
+}
+
+.button:disabled {
+    opacity: 0.65;
+    pointer-events: none;
+}

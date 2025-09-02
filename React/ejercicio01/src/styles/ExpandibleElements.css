@@ -1,0 +1,72 @@
+.expandible-list {
+    list-style: none;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.expandible-item {
+    margin: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.2s ease;
+    background-color: #fff;
+}
+
+.expandible-header {
+    padding: 1rem 1.5rem;
+    background-color: transparent;
+    color: #333;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow-icon {
+    color: #666;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.expandible-item.expanded .arrow-icon {
+    transform: rotate(90deg);
+}
+
+.expandible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    padding: 0 1.5rem;
+    color: #666;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+}
+
+.expandible-item.expanded .expandible-content {
+    max-height: 200px;
+    padding: 1rem 1.5rem;
+}
+
+.expandible-item:hover {
+    background-color: #f8f9fa;
+    transform: none;
+    box-shadow: none;
+}
+
+.expandible-item.expanded {
+    border-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+    .expandible-list {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+}
