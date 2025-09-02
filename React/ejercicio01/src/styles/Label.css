@@ -1,0 +1,57 @@
+.label-container {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.label-item {
+    background-color: #1a6ec2;
+    border: 1px solid #e9ecef;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.label-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background-color: #d4ddee;
+    transition: background-color 0.3s ease;
+}
+
+.label-title {
+    font-size: 1rem;
+    color: #78aee4;
+    font-weight: 500;
+}
+
+.toggle-icon {
+    font-size: 1.5rem;
+    color: #6c757d;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+}
+
+.label-content {
+    color: lightblue;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #ffffff;
+    padding: 0 1.5rem;
+}
+
+.label-item.expanded .label-content {
+    max-height: 500px;
+    padding: 1rem 1.5rem;
+}
+
+.label-item:hover .label-header {
+    background-color: #c0cbdf;
+}
+
+.label-item.expanded .label-header {
+    border-bottom: 1px solid #e9ecef;
+}

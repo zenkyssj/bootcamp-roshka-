@@ -1,0 +1,59 @@
+.banner {
+    background: linear-gradient(167.85deg, 
+        rgba(35, 174, 253, 0.7) 31.41%,
+        rgba(2, 104, 206, 0.7) 83.74%, 
+        rgba(3, 28, 53, 0.7) 83.74%
+    );
+    padding: 4rem 2rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    text-align: center;
+}
+
+.banner-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.banner-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.banner-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.banner-button {
+    background-color: #00ff9d;
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.banner-button:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .banner-title {
+        font-size: 2.5rem;
+    }
+
+    .banner {
+        padding: 3rem 1rem;
+    }
+}
