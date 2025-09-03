@@ -1,28 +1,41 @@
 package com.bootcamp.roshka.controller;
 
 
+import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
+import com.bootcamp.roshka.model.entity.Usuario;
+import com.bootcamp.roshka.model.entity.auth.AuthRequest;
+import com.bootcamp.roshka.model.entity.auth.AuthResponse;
+import com.bootcamp.roshka.model.service.ILoginService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class AuthController {
+    private ILoginService loginService;
 
-    public AuthController(){
-
+    public AuthController(ILoginService loginService){
+        this.loginService = loginService;
     }
 
-    @GetMapping("/login")
-    public String loginUser(){
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest request){
 
-        return "logueando...";
+        var user = loginService.Auth(request);
+
+        if (user == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @RequestBody UserInsertDto insertDto){
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserInsertDto insertDto){
 
-        return "registrando usuario";
+        return ResponseEntity.ok("Usuario registrado");
     }
 
 }

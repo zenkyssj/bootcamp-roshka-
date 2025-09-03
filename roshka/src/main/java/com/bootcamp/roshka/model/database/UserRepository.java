@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<Usuario, Integer> {
 
     List<Usuario> findByIdRolAndIdEquipoAndIdCargo(int idRol, int idEquipo, int idCargo);
 
+    Usuario findByCorreo(String correo);
 }
