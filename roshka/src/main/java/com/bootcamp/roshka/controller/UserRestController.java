@@ -6,6 +6,7 @@ import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.List;
 public class UserRestController {
     private final IUserService<UserDto, UserInsertDto, UserUpdateDto> userService;
 
+    @Autowired
     public UserRestController(IUserService<UserDto, UserInsertDto, UserUpdateDto> userService){
         this.userService = userService;
     }

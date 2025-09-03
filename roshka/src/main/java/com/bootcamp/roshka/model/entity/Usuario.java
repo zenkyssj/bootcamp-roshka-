@@ -1,14 +1,71 @@
 package com.bootcamp.roshka.model.entity;
 
+import jakarta.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
-    private int id_usuario;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Column(name = "id_usuario")
+    private int idUsuario;
+
+    @Column(name = "nombre")
+    private String nombre;
+
+    @Column(name = "apellido")
+    private String apellido;
+
+    @Column(name = "nro_cedula")
+    private int nro_cedula;
+
+    @Column(name = "correo")
+    private String correo;
+
+    @Column(name = "id_rol")
+    private int idRol;
+
+    @Column(name = "fecha_ingreso")
+    private java.sql.Date fecha_ingreso;
+
+    @Column(name = "antiguedad")
+    private String antiguedad;
+
+    @Column(name = "dias_vacaciones")
+    private int dias_vacaciones;
+
+    @Column(name = "estado")
+    private boolean estado;
+
+    @Column(name = "contrasena")
+    private String contrasena;
+
+    @Column(name = "telefono")
+    private String telefono;
+
+    @Column(name = "id_equipo")
+    private int idEquipo;
+
+    @Column(name = "id_cargo")
+    private int idCargo;
+
+    @Column(name = "fecha_nacimiento")
+    private java.sql.Date fecha_nacimiento;
+
+    @Column(name = "dias_vacaciones_restante")
+    private int dias_vacaciones_restante;
+
+    @Column(name = "requiere_cambio_contrasena")
+    private boolean requiere_cambio_contrasena;
 
     public int getId_usuario() {
-        return id_usuario;
+        return idUsuario;
     }
 
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setId_usuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -44,11 +101,11 @@ public class Usuario {
     }
 
     public int getId_rol() {
-        return id_rol;
+        return idRol;
     }
 
-    public void setId_rol(int id_rol) {
-        this.id_rol = id_rol;
+    public void setId_rol(int idRol) {
+        this.idRol = idRol;
     }
 
     public java.sql.Date getFecha_ingreso() {
@@ -100,19 +157,19 @@ public class Usuario {
     }
 
     public int getId_equipo() {
-        return id_equipo;
+        return idEquipo;
     }
 
-    public void setId_equipo(int id_equipo) {
-        this.id_equipo = id_equipo;
+    public void setId_equipo(int idEquipo) {
+        this.idEquipo = idEquipo;
     }
 
     public int getId_cargo() {
-        return id_cargo;
+        return idCargo;
     }
 
-    public void setId_cargo(int id_cargo) {
-        this.id_cargo = id_cargo;
+    public void setId_cargo(int idCargo) {
+        this.idCargo = idCargo;
     }
 
     public java.sql.Date getFecha_nacimiento() {
@@ -139,20 +196,5 @@ public class Usuario {
         this.requiere_cambio_contrasena = requiere_cambio_contrasena;
     }
 
-    private String nombre;
-    private String apellido;
-    private int nro_cedula;
-    private String correo;
-    private int id_rol;
-    private java.sql.Date fecha_ingreso;
-    private String antiguedad;
-    private int dias_vacaciones;
-    private boolean estado;
-    private String contrasena;
-    private String telefono;
-    private int id_equipo;
-    private int id_cargo;
-    private java.sql.Date fecha_nacimiento;
-    private int dias_vacaciones_restante;
-    private boolean requiere_cambio_contrasena;
+
 }
