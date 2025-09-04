@@ -1,6 +1,6 @@
-package com.bootcamp.roshka.model.service;
+package com.bootcamp.roshka.model.service.user;
 
-import com.bootcamp.roshka.model.database.UserRepository;
+import com.bootcamp.roshka.model.repository.UserRepository;
 import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 @Service
-public class UserService implements IUserService<UserDto, UserInsertDto, UserUpdateDto>{
+public class UserService implements IUserService<UserDto, UserInsertDto, UserUpdateDto> {
 
     private final UserRepository userRepository;
 

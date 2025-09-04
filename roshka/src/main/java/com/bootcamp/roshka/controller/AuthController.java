@@ -1,12 +1,10 @@
 package com.bootcamp.roshka.controller;
 
 
-import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
-import com.bootcamp.roshka.model.entity.Usuario;
 import com.bootcamp.roshka.model.entity.auth.AuthRequest;
 import com.bootcamp.roshka.model.entity.auth.AuthResponse;
-import com.bootcamp.roshka.model.service.ILoginService;
+import com.bootcamp.roshka.model.service.login.ILoginService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

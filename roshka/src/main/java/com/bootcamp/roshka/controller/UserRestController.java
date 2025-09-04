@@ -1,7 +1,7 @@
 package com.bootcamp.roshka.controller;
 
 
-import com.bootcamp.roshka.model.service.IUserService;
+import com.bootcamp.roshka.model.service.user.IUserService;
 import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;

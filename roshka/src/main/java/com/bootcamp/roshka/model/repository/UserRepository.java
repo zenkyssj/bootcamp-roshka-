@@ -1,4 +1,4 @@
-package com.bootcamp.roshka.model.database;
+package com.bootcamp.roshka.model.repository;
 
 import com.bootcamp.roshka.model.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

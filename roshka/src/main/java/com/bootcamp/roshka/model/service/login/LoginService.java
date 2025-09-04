@@ -1,12 +1,11 @@
-package com.bootcamp.roshka.model.service;
+package com.bootcamp.roshka.model.service.login;
 
-import com.bootcamp.roshka.model.database.UserRepository;
+import com.bootcamp.roshka.model.repository.UserRepository;
 import com.bootcamp.roshka.model.entity.Usuario;
 import com.bootcamp.roshka.model.entity.auth.AuthRequest;
 import com.bootcamp.roshka.model.entity.auth.AuthResponse;
 import com.bootcamp.roshka.tools.Encrypt;
 import com.bootcamp.roshka.tools.jwt.JwtService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,10 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 @Service
-public class LoginService implements ILoginService{
+public class LoginService implements ILoginService {
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;

@@ -1,6 +1,6 @@
-package com.bootcamp.roshka.model.service;
+package com.bootcamp.roshka.model.service.user;
 
-import com.bootcamp.roshka.model.database.UserRepository;
+import com.bootcamp.roshka.model.repository.UserRepository;
 import com.bootcamp.roshka.model.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

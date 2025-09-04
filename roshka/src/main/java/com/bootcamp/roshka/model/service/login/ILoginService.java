@@ -1,4 +1,4 @@
-package com.bootcamp.roshka.model.service;
+package com.bootcamp.roshka.model.service.login;
 
 import com.bootcamp.roshka.model.entity.Usuario;
 import com.bootcamp.roshka.model.entity.auth.AuthRequest;

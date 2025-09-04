@@ -3,7 +3,7 @@ package com.bootcamp.roshka.controller;
 import com.bootcamp.roshka.model.dto.UserDto;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.dto.UserUpdateDto;
-import com.bootcamp.roshka.model.service.IUserService;
+import com.bootcamp.roshka.model.service.user.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

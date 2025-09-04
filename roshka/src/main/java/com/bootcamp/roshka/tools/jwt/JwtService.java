@@ -20,10 +20,10 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}") // TODO: Cambiar auna variable de entorno
+    @Value("${jwt.secret}") // TODO: Cambiar auna variable de entorno
     private String secretKey;
 
-    @Value("${jwt.expiration:28800000}")
+    @Value("${jwt.expiration:900000}")
     private long jwtExpiration;
 
     public String extractUsername(String token){
