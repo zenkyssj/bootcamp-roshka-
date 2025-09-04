@@ -35,9 +35,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getId_rol()));
 
+        System.out.println("Autoridades asignadas: " + authorities);
+
         return new User(
                 user.getCorreo(),
                 user.getContrasena(),
+                true,
+                true,
+                true,
+                true,
                 authorities
         );
     }

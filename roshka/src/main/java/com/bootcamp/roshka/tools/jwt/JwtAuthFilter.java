@@ -31,50 +31,78 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.startsWith("/api/auth/login");
+    }
+
+
+    @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)
-    throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
-        
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        if (path.equals("/api/auth/login") || path.equals("/api/auth/register")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
+        final String authHeader = request.getHeader("Authorization");
+
+        // Si no hay header de autorización, continuar sin autenticar
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        final String jwt = authHeader.substring(7);
 
         try {
-            userEmail = jwtService.extractUsername(jwt);
+            final String userEmail = jwtService.extractUsername(jwt);
 
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null ){
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-                Integer idRol = jwtService.extractClaim(jwt, claims -> claims.get("idRol", Integer.class));
-
-                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                if (idRol != null){
-                    authorities.add(new SimpleGrantedAuthority("ROLE_" + idRol));
-                }
-
                 if (jwtService.isTokenValid(jwt, userDetails)) {
+                    // Extraer idRol del token si existe
+                    Integer idRol = null;
+                    try {
+                        idRol = jwtService.extractClaim(jwt, claims -> claims.get("idRol", Integer.class));
+                        System.out.println("Rol extraído del token: " + idRol);
+
+                    } catch (Exception e) {
+                        System.err.println("Error al extraer rol del token: " + e.getMessage());
+
+                    }
+
+                    // Crear autoridades basadas en el rol
+                    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                    if (idRol != null) {
+                        authorities.add(new SimpleGrantedAuthority("ROLE_" + idRol));
+                        System.out.println("Añadida autoridad: ROLE_" + idRol);
+
+                    }
+
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
                             authorities
                     );
 
-                    authToken.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
-
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    System.out.println("Usuario autenticado: " + userEmail);
+                    System.out.println("Autoridades: " + authorities);
+
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
+            System.err.println("Error al procesar el token JWT: " + e.getMessage());
             e.printStackTrace();
         }
 

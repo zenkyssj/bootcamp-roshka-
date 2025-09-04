@@ -1,4 +1,4 @@
-package com.bootcamp.roshka.model.service.login;
+package com.bootcamp.roshka.model.service.auth;
 
 import com.bootcamp.roshka.model.repository.UserRepository;
 import com.bootcamp.roshka.model.entity.Usuario;
@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class LoginService implements ILoginService {

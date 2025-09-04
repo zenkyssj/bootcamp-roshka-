@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -53,33 +54,34 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios").hasAnyAuthority("ROLE_1", "ROLE_4")
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios").hasAnyAuthority("ROLE_1", "ROLE_4")
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasAnyAuthority("ROLE_1", "ROLE_4")
+                        .requestMatchers(HttpMethod.PUT, "/api/usuarios/**").hasAnyAuthority("ROLE_1", "ROLE_4")
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasAnyAuthority("ROLE_1", "ROLE_4")
+
                         .anyRequest().authenticated()
+
                 )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sess ->
+                        sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(Customizer.withDefaults())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
-                            // Loguear detalles del error para depuración
-                            System.err.println("Error de autenticación: " + authException.getMessage());
+                            System.err.println("=== ERROR DE AUTENTICACIÓN ===");
                             System.err.println("URI: " + request.getRequestURI());
                             System.err.println("Método: " + request.getMethod());
+                            System.err.println("Mensaje: " + authException.getMessage());
+                            System.err.println("Autenticación: " + SecurityContextHolder.getContext().getAuthentication());
 
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write("Error de autenticación: " + authException.getMessage());
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.getWriter().write("{\"error\":\"Error de autenticación\", \"mensaje\":\""
+                                    + authException.getMessage() + "\"}");
                         })
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            // Manejar acceso denegado (código 403)
-                            System.err.println("Acceso denegado: " + accessDeniedException.getMessage());
-                            System.err.println("URI: " + request.getRequestURI());
-                            System.err.println("Método: " + request.getMethod());
-
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.getWriter().write("Acceso denegado: No tienes permisos para acceder a este recurso");
-                        })
-
                 )
                 .build();
 

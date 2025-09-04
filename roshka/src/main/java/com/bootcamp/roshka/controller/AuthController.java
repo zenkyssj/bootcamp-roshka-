@@ -4,18 +4,24 @@ package com.bootcamp.roshka.controller;
 import com.bootcamp.roshka.model.dto.UserInsertDto;
 import com.bootcamp.roshka.model.entity.auth.AuthRequest;
 import com.bootcamp.roshka.model.entity.auth.AuthResponse;
-import com.bootcamp.roshka.model.service.login.ILoginService;
+import com.bootcamp.roshka.model.service.auth.ILoginService;
+import com.bootcamp.roshka.model.service.auth.IRegisterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private ILoginService loginService;
+    private final ILoginService loginService;
+    private final IRegisterService registerService;
 
-    public AuthController(ILoginService loginService){
+    public AuthController(ILoginService loginService,
+                          IRegisterService registerService){
         this.loginService = loginService;
+        this.registerService = registerService;
     }
 
     @PostMapping("/login")
@@ -31,9 +37,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody UserInsertDto insertDto){
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserInsertDto insertDto) throws NoSuchAlgorithmException {
 
-        return ResponseEntity.ok("Usuario registrado");
+        Boolean createUser = registerService.registerUser(insertDto);
+
+        return createUser == null ? ResponseEntity.badRequest().body("Error al crear el usuario") : ResponseEntity.ok("Usuario registrado");
     }
 
 }

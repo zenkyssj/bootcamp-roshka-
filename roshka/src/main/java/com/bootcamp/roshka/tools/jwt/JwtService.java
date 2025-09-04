@@ -41,11 +41,23 @@ public class JwtService {
         Map<String, Object> extraClaims = new HashMap<>();
 
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+
+        System.out.println("Autoridades del usuario: " + authorities);
+
         for (GrantedAuthority authority : authorities) {
             String role = authority.getAuthority();
+            System.out.println("Autoridad: " + role);
+
+
             if (role.startsWith("ROLE_")) {
-                int idRol = Integer.parseInt(role.substring(5));
-                extraClaims.put("idRol", idRol);
+                try {
+                    int idRol = Integer.parseInt(role.substring(5));
+                    extraClaims.put("idRol", idRol);
+                    System.out.println("Añadido rol " + idRol + " al token");
+                } catch (NumberFormatException e) {
+                    System.err.println("Error al convertir el rol: " + e.getMessage());
+                }
+
             }
         }
 
