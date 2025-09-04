@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -40,7 +41,9 @@ public class UserRestController {
         return model;
     }
 
+
     @GetMapping("/usuarios")
+    @PreAuthorize("hasAnyAuthority('ROLE_1', 'ROLE_4')")
     public ResponseEntity<List<UserDto>> getAll(
             @RequestParam(value = "rol", required = false) Integer idRol,
             @RequestParam(value = "equipo", required = false) Integer idEquipo,
@@ -87,6 +90,7 @@ public class UserRestController {
     }
 
     @GetMapping("/usuarios/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_1', 'ROLE_4')")
     public ResponseEntity<UserDto> getById(@PathVariable int id){
         System.out.println("llamando al servicio..."); // Para debug
 
@@ -104,6 +108,7 @@ public class UserRestController {
     }
 
     @PostMapping("/usuarios")
+    @PreAuthorize("hasAnyAuthority('ROLE_1', 'ROLE_4')")
     public ResponseEntity<UserDto> add(@Valid @RequestBody UserInsertDto insertDto){
         System.out.println("llamando al servicio..."); // Para debug
 
@@ -142,6 +147,7 @@ public class UserRestController {
     }
 
     @DeleteMapping("usuarios/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_1', 'ROLE_4')")
     public ResponseEntity<UserDto> delete(@PathVariable int id){
         System.out.println("llamando al servicio...");
 

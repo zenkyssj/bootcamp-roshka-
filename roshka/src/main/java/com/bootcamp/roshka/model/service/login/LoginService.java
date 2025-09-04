@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class LoginService implements ILoginService {
@@ -40,7 +42,7 @@ public class LoginService implements ILoginService {
         try {
             String hashedPassword = Encrypt.GetBCRYPT(request.getPassword());
 
-            if (!user.getContrasena().equals(hashedPassword)) {
+            if (!user.getContrasena().equals(request.getPassword())) {
                 throw new BadCredentialsException("Credenciales invalidas");
             }
 

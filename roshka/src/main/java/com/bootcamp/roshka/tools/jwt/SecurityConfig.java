@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -33,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -68,6 +70,16 @@ public class SecurityConfig {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.getWriter().write("Error de autenticación: " + authException.getMessage());
                         })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            // Manejar acceso denegado (código 403)
+                            System.err.println("Acceso denegado: " + accessDeniedException.getMessage());
+                            System.err.println("URI: " + request.getRequestURI());
+                            System.err.println("Método: " + request.getMethod());
+
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.getWriter().write("Acceso denegado: No tienes permisos para acceder a este recurso");
+                        })
+
                 )
                 .build();
 
